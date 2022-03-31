@@ -644,6 +644,9 @@
 
 
 <h1 id="newtonoptimizer">NewtonOptimizer</h1>
+<blockquote>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M224 128V0H48C21.49 0 0 21.49 0 48v416c0 26.5 21.49 48 48 48h288c26.51 0 48-21.49 48-48V160H256.9c-18.6 0-32.9-14.3-32.9-32zm-69.9 225.8c7.812 7.812 7.812 20.5 0 28.31-3.9 3.99-9 5.89-14.1 5.89s-10.23-1.938-14.14-5.844l-48-48c-7.812-7.812-7.812-20.5 0-28.31l48-48c7.812-7.812 20.47-7.812 28.28 0s7.812 20.5 0 28.31L120.3 320l33.8 33.8zm152-48c7.812 7.812 7.812 20.5 0 28.31l-48 48c-3.9 3.99-9 5.89-14.1 5.89s-10.23-1.938-14.14-5.844c-7.812-7.812-7.812-20.5 0-28.31L263.7 320l-33.86-33.84c-7.812-7.812-7.812-20.5 0-28.31s20.47-7.812 28.28 0l47.98 47.95zM256 0v128h128L256 0z"/></svg></span> core/OPT/NewtonOptimizer.h &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M208 80c0-26.51 21.5-48 48-48h64c26.5 0 48 21.49 48 48v64c0 26.5-21.5 48-48 48h-8v40h152c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-64c-26.5 0-48-21.5-48-48v-64c0-26.5 21.5-48 48-48h8v-32c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-64c-26.5 0-48-21.5-48-48v-64c0-26.5 21.5-48 48-48h8v-40H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.51 0-48-21.5-48-48v-64c0-26.5 21.49-48 48-48h8v-32c0-30.9 25.07-56 56-56h152v-40h-8c-26.5 0-48-21.5-48-48V80z"/></svg></span> Extends: <a href="../Optimizer/#IterativeOptimizer">IterativeOptimizer</a></p>
+</blockquote>
 <p>Template class to optimize a given <a href="../ScalarField/">ScalarField</a> over <script type="math/tex"> \mathbb{R}^N </script> using the Newton's iterative optimization method:
 <script type="math/tex; mode=display"> x_{n+1} = x_{n} - \lambda H_f(x_n)^{-1} \cdot \nabla f(x_n) </script>
 where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> denotes the Hessian matrix of the field evaluated at point <script type="math/tex"> x_n </script>.</p>
@@ -658,7 +661,8 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
 <p>At each iteration of the method to avoid the cost of matrix inversion, the quantity <script type="math/tex"> H_f(x_n)^{-1} \cdot \nabla f(x_n) </script> is computed by solving the linear system <script type="math/tex"> H_f(x_n) z = \nabla f(x_n) </script> in <script type="math/tex"> z </script> using eigen's <a href="https://eigen.tuxfamily.org/dox/classEigen_1_1ColPivHouseholderQR.html">QR decompostion with column-pivoting</a>.</p>
 </div>
 <h2 id="methods">Methods</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NewtonOptimizer(double step_)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">NewtonOptimizer</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">step_</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SVector</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">x0_</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">maxIteration_</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">                </span><span class="kt">double</span><span class="w"> </span><span class="n">tolerance_</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ScalarField</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">objective_</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <div class="admonition quote">
 <p>Constructor initializing some quantities in the internal representation of the class.</p>
@@ -674,23 +678,6 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
 <td><code>double step_</code></td>
 <td>The term <script type="math/tex"> \lambda </script> in the iterative formulation of the Newton's method.</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">SVector</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">findMinimum</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SVector</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">x0</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">maxIteration</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">            </span><span class="kt">double</span><span class="w"> </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">ScalarField</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">objective</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
-</code></pre></div>
-<div class="admonition quote">
-<p>Applies the optimization method to the objective passed as argument. Returns <code>std::pair&lt;SVector&lt;N&gt;,double&gt;</code> where the first element is the point in <script type="math/tex"> \mathbb{R}^N </script> where the minimum is reached while the second one is the actual minimum value reached by the objective.</p>
-<table>
-<thead>
-<tr>
-<th>Args</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td><code>const SVector&lt;N&gt;&amp; x0</code></td>
 <td>The initial point from which the iterative method is started.</td>
@@ -709,9 +696,18 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The method stops either if the <script type="math/tex"> l^2 </script> norm of the gradient of the objective <script type="math/tex"> \left\lVert \nabla f(x_n) \right\rVert </script> reaches the required tolerance or if such tolerance is not reached before a <code>maxIteration</code> number of iterations.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">SVector</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">findMinimum</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition quote">
+<p>Applies the optimization method to the objective passed as argument. Returns <code>std::pair&lt;SVector&lt;N&gt;,double&gt;</code> where the first element is the point in <script type="math/tex"> \mathbb{R}^N </script> where the minimum is reached while the second one is the actual minimum value reached by the objective.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Default stopping condition: the method stops either if the <script type="math/tex"> l^2 </script> norm of the gradient of the objective <script type="math/tex"> \left\lVert \nabla f(x_n) \right\rVert </script> reaches the required tolerance or if such tolerance is not reached before a <code>maxIteration</code> number of iterations.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can control the optimizer by exploiting the <a href="../Optimizer/#IterativeOptimizer">IterativeOptimizer</a> interface.</p>
 </div>
 </div>
 <h2 id="examples">Examples</h2>
@@ -733,10 +729,7 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
 <span class="normal"><a href="#__codelineno-3-15">15</a></span>
 <span class="normal"><a href="#__codelineno-3-16">16</a></span>
 <span class="normal"><a href="#__codelineno-3-17">17</a></span>
-<span class="normal"><a href="#__codelineno-3-18">18</a></span>
-<span class="normal"><a href="#__codelineno-3-19">19</a></span>
-<span class="normal"><a href="#__codelineno-3-20">20</a></span>
-<span class="normal"><a href="#__codelineno-3-21">21</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// define target to optimize: 2*x^2 + x + 2*y^2</span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// define target to optimize: 2*x^2 + x + 2*y^2</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">(</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
 <a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span>
 <a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="p">};</span><span class="w"></span>
@@ -745,18 +738,15 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
 <a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">ScalarField</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">objective</span><span class="p">(</span><span class="n">g</span><span class="p">);</span><span class="w"></span>
 <a id="__codelineno-3-8" name="__codelineno-3-8"></a>
 <a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="c1">// perform newton optimization</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10"></a>
-<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="c1">// set learning rate</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="kt">double</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="kt">double</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">;</span><span class="w">                    </span><span class="c1">// learning rate</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">max_iterations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w">      </span><span class="c1">// max number of iterations</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="kt">double</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">;</span><span class="w">                </span><span class="c1">// tolerance</span>
 <a id="__codelineno-3-13" name="__codelineno-3-13"></a>
 <a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="c1">// create optimizer</span>
-<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="n">NewtonOptimizer</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">optNewton2D</span><span class="p">(</span><span class="n">lambda</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="n">NewtonOptimizer</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">optNewton2D</span><span class="p">(</span><span class="n">lambda</span><span class="p">,</span><span class="w"> </span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">max_iterations</span><span class="p">,</span><span class="w"> </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">objective</span><span class="p">);</span><span class="w"></span>
 <a id="__codelineno-3-16" name="__codelineno-3-16"></a>
-<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="c1">// find minimum of g</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">max_iterations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="kt">double</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">min_g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">optNewton2D</span><span class="p">.</span><span class="n">findMinimum</span><span class="p">(</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">max_iterations</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">                                                             </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">objective</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="c1">// find minimum of objective</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">min_g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">optNewton2D</span><span class="p">.</span><span class="n">findMinimum</span><span class="p">();</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 
@@ -824,7 +814,7 @@ where <script type="math/tex"> H_f(x_n) \in \mathbb{R}^{N \times N} </script> de
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.instant", "navigation.expand", "navigation.sections", "content.code.annotate"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.expand", "navigation.sections", "content.code.annotate"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
     
     
       <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
