@@ -9,15 +9,15 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.7">
     
     
       
-        <title>Index - fdaPDE</title>
+        <title>Mesh module - fdaPDE</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2d9f7617.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9d5733d3.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -60,6 +60,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#mesh-module" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -89,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Index
+              Mesh module
             
           </span>
         </div>
@@ -136,7 +141,7 @@
         <a href="https://github.com/fdaPDE/fdaPDE" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     fdaPDE/fdaPDE
@@ -185,6 +190,8 @@
         
   
   
+    
+  
 
 
   
@@ -201,7 +208,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../OPT/" class="md-tabs__link">
+      <a href="../OPT/" class="md-tabs__link md-tabs__link--active">
         Documentation
       </a>
     </li>
@@ -246,7 +253,7 @@
       <a href="https://github.com/fdaPDE/fdaPDE" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     fdaPDE/fdaPDE
@@ -292,12 +299,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -322,14 +331,16 @@
               
   
   
+    
+  
   
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" data-md-state="indeterminate" type="checkbox" id="__nav_3_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" checked>
       
       
       
@@ -549,11 +560,142 @@
               
   
   
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1_2" type="checkbox" id="__nav_3_1_2" checked>
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="./">MESH</a>
+          
+            <label for="__nav_3_1_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="MESH" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          MESH
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
   
     <li class="md-nav__item">
-      <a href="../../-core/MESH/index.md" class="md-nav__link">
-        MESH
+      <a href="Mesh/" class="md-nav__link">
+        Mesh
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Element.md" class="md-nav__link">
+        Element
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Geometry.md" class="md-nav__link">
+        Geometry
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="BFS.md" class="md-nav__link">
+        BruteForceSearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="BWS.md" class="md-nav__link">
+        BarycentricWalkSearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="TBS.md" class="md-nav__link">
+        TreeBasedSearch
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -593,6 +735,39 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#engines" class="md-nav__link">
+    Engines
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -600,9 +775,169 @@
                 
 
 
-  <h1>Index</h1>
+<h1 id="mesh-module">Mesh module</h1>
+<blockquote>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h160l64 64h192c26.5 0 48 21.5 48 48z"/></svg></span> core/MESH/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M208 80c0-26.51 21.5-48 48-48h64c26.5 0 48 21.49 48 48v64c0 26.5-21.5 48-48 48h-8v40h152c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-64c-26.5 0-48-21.5-48-48v-64c0-26.5 21.5-48 48-48h8v-32c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-64c-26.5 0-48-21.5-48-48v-64c0-26.5 21.5-48 48-48h8v-40H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.51 0-48-21.5-48-48v-64c0-26.5 21.49-48 48-48h8v-32c0-30.9 25.07-56 56-56h152v-40h-8c-26.5 0-48-21.5-48-48V80z"/></svg></span> Namespace: fdaPDE::core::MESH</p>
+</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In principle any mesh file can be handled by this module. A simple CSV parser is part of the module which makes able to load mesh informations from .csv files. Anyway fdaPDE mainly refers to meshes built from the Triangle mesh generation software (see more on <a href="https://www.cs.cmu.edu/~quake/triangle.html">Triangle's website</a>) and makes computations based on the specific mesh storage layout provided by triangle (i.e. the mesh topology is reconstructed making heavy assumptions on its storage scheme). </p>
+<p>Therefore even if is possible, <strong>is not recommended</strong> to use this module outside the Triangle's specific output structure. 
+In any case if you use any of the front-ends provided by fdaPDE, Triangle is automatically used as part of the mesh generation process.</p>
+</div>
+<p>The mesh module provides an abstraction layer to the user interfacing directly with the mesh topology by hiding all the details about its organization in memory. The content of the following info box is of interest to developers only or in case you want to understand more in depth the mesh management inside this module.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>A mesh is typically provided as a set of the following raw informations (usually produced by the mesh generation process):</p>
+<ul>
+<li>
+<p>a matrix <script type="math/tex"> P \in \mathbb{R}^{L \times N} </script>, with <script type="math/tex">L</script> number of mesh nodes and <script type="math/tex">N</script> dimension of the space where the mesh is embedded. Row i of matrix <script type="math/tex">P</script> gives the coordinates as floating-point numbers of node i in <script type="math/tex"> \mathbb{R}^N </script>. This is the only source where we can access informations about the location of nodes in space. Any other source will reference to points by their row index in this matrix.</p>
+</li>
+<li>
+<p>a matrix <script type="math/tex">T \in \mathbb{N}^{K \times (M+1)} </script> with <script type="math/tex">K</script> number of mesh elements, where row i contains as elements the row indexes of the points in matrix <script type="math/tex"> P </script> constituting the vertices of the mesh element with identifier i.</p>
+</li>
+<li>
+<p>a matrix <script type="math/tex">E \in \mathbb{N}^{J \times N} </script> with <script type="math/tex">J</script> number of mesh edges, where row i contains as elements the row indexes of the points in matrix <script type="math/tex"> P </script> constituting the endpoints of the edge with identifier i.</p>
+</li>
+<li>
+<p>a matrix <script type="math/tex">N \in \mathbb{N}^{K \times (M+1)} </script> where row i contains as elements the row indexes of the elements in matrix <script type="math/tex"> T </script> constituting the neighboring elements to the element i. Take care that <em>the first neighbor of triangle i is opposite the first corner of triangle i, and so on.</em> A negative value means that there is no neighbor.</p>
+</li>
+</ul>
+<p>This module hides all these details by supplying a more abstract <a href="Element.md">Element</a> object which is able to represent more faithfully the geometry as well as the connectivity of the single mesh element. In this way users can think at an higher abstract level without the burden of this matrix representation.</p>
+</div>
+<p>The main entry point of this module is the <code>Mesh</code> class which provides a set of facilities for easy management of the elements inside the mesh</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="o">&gt;</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Mesh</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Template parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unsigned int M</code></td>
+<td>The local dimension of the mesh elements, i.e. the dimension of the euclidean space where the single mesh element is embedded. According to the value of M we can have as mesh elements: <ul><li>1D objects as lines (M=1)</li> <li>2D objects as triangles (M=2)</li> <li>3D objects as tetrahedrons (M=3)</li></ul></td>
+</tr>
+<tr>
+<td><code>unsigned int N</code></td>
+<td>The dimension of the space where the mesh is embedded.</td>
+</tr>
+</tbody>
+</table>
+<p>In case <script type="math/tex"> N \neq M </script> fdaPDE assumes a manifold mesh and will activate the proper specializations to deal with this kind of structures. </p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Supported manifold dimensions are 1.5D for linear network (each element is a segment embedded on a plane) and 2.5D (each element is a triangle embedded in a 3D space) for surface meshes.</p>
+</div>
+<p>The following code snippet provides an example of the API offered by this module. Refer to the specific pages for more detailed informations:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">// load a 2D mesh from .csv files</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">Mesh</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">mesh</span><span class="p">(</span><span class="s">&quot;nodes.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;edges.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;triangles.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;neighbors.csv&quot;</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1">// once you have the mesh in memory you can...</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="c1">// request for a specific element if you know its ID...</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="p">.</span><span class="n">requestElementById</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="c1">// range-for the mesh elements...</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="k">for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">mesh</span><span class="p">){</span><span class="w"></span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="c1">// do some operations on each single element</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="c1">// search for the element which contains a given point by using one of the provided engines</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="n">ADT</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">treeBasedSearchEngine</span><span class="p">(</span><span class="n">mesh</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeBasedSearchEngine</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">SVector</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">));</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="engines">Engines</h2>
+<p>One of the most recurrent operation a mesh handler faces to solve is the element search. This is particularly important when, for example, we need to evaluate the solution of a differential problem once discretized using the Finite Element Method to produce some raster image of the obtained results. In such cases hundreds of thousands of queries must be supplied to the mesh module which must be able to solve these queries in a reasonable amount of time.</p>
+<p>The mesh module provides a set of search engines which can be used to accomplish this problem. Here we report just some performance indicator of the engines provided, refer to the specifc pages for detailed informations (times are reported in microseconds per query). </p>
+<table>
+  <tr>
+    <td>Engines</td>
+    <td colspan="2"> 2D </td>
+    <td colspan="2"> 2.5D </td>
+    <td colspan="2"> 3D </td>
+    <td>  </td>
+  </tr>
+  <tr>
+    <td>              </td>
+    <td> us/query (average) </td>
+    <td> query/second </td>
+    <td> us/query (average) </td>
+    <td> query/second </td>
+    <td> us/query (average) </td>
+    <td> query/second </td>
+    <td> Complexity </td>
+  </tr>
+  <tr>
+    <td> BruteForce   </td>
+    <td> 715 </td>
+    <td> 1400 </td>
+    <td> average time </td>
+    <td> query/second </td>
+    <td> average time </td>
+    <td> query/second </td>
+    <td> \( O(n) \) </td>
+  </tr>
+  <tr>
+    <td> BarycentricWalk   </td>
+    <td> 11 </td>
+    <td> 90.000 </td>
+    <td> - </td>
+    <td> - </td>
+    <td> average time </td>
+    <td> query/second </td>
+    <td> \( O(\sqrt{n}) \) </td>
+  </tr>
+    <tr>
+    <td> ADT (tree based)   </td>
+    <td> 3 </td>
+    <td> 270.000 </td>
+    <td> average time </td>
+    <td> query/second </td>
+    <td> average time </td>
+    <td> query/second </td>
+    <td> \( O(\log{n}) \) </td>
+  </tr>
+</table>
 
-
+<p>Engines provides an unified interface represented by a single method <code>search</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Element</span><span class="o">&lt;</span><span class="n">M</span><span class="p">,</span><span class="n">N</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">search</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SVector</span><span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">point</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition quote">
+<table>
+<thead>
+<tr>
+<th>Args</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>const SVector&lt;N&gt;&amp; point</code></td>
+<td>The N-dimensional point to search for.</td>
+</tr>
+</tbody>
+</table>
+<p>The method returns a shared pointer to the element containing the given point.</p>
+</div>
 
               
             </article>
@@ -612,6 +947,41 @@
       </main>
       
         <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../OPT/Extensions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Extensions" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Extensions
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="Mesh/" class="md-footer__link md-footer__link--next" aria-label="Next: Mesh" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Mesh
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -633,10 +1003,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand", "navigation.sections", "content.code.annotate", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand", "navigation.sections", "content.code.annotate", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.5e67fbfe.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.467223ff.min.js"></script>
+      <script src="../../assets/javascripts/bundle.e87a5f81.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       
