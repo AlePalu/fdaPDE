@@ -1,6 +1,5 @@
-
-#include <Rcpp.h>
-using namespace Rcpp;
+#include<RcppEigen.h>
+#include<fdaPDE/Core.h>
 
 // [[Rcpp::export]]
 List rcpp_hello_world() {
