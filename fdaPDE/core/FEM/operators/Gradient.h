@@ -1,10 +1,10 @@
 #ifndef __GRADIENT_H__
 #define __GRADIENT_H__
 
-#include "../../utils/Symbols.h"
-#include "../../utils/fields/VectorField.h"
 #include <cstddef>
 #include <type_traits>
+#include "../../utils/Symbols.h"
+#include "../../utils/fields/VectorField.h"
 using fdaPDE::core::VectorField;
 #include "../../MESH/Element.h"
 using fdaPDE::core::MESH::Element;
@@ -29,7 +29,7 @@ namespace FEM{
   template <typename T>
   class Gradient : public BilinearFormExpr<Gradient<T>>{
     // perform compile-time sanity checks
-    static_assert(std::is_base_of<VectBase, T>::value || // space-varying case
+    static_assert(std::is_base_of<VectorBase, T>::value || // space-varying case
 		  is_eigen_vector<T>());                 // constant coefficient case
   private:
     T b_; // transport vector (either constant or space-varying)
@@ -39,23 +39,15 @@ namespace FEM{
 
     // compile time informations
     std::tuple<Gradient<T>> getTypeList() const { return std::make_tuple(*this); }
-    static constexpr bool is_space_varying = std::is_base_of<VectBase, T>::value;
+    static constexpr bool is_space_varying = std::is_base_of<VectorBase, T>::value;
     
-    // approximates the contribution to the (i,j)-th element of the discretization matrix given by the transport term:
-    // \int_e phi_i * b.dot(\Nabla phi_j)
-    // basis: any type compliant with a functional basis behaviour. See LagrangianBasis.h for an example
-    //        NOTE: we assume "basis" to provide functions already defined on the reference element
-    // e: the pyhsical element on which we are integrating
-    // i,j: indexes of the discretization matrix entry we are computing
-
-    // NOTE: is important to use auto return type to let the compiler return the whole expression template produced by this
-    // operator avoiding both type erause (e.g. by casting to some ScalarField object) as well as the creation of temporaries
-    template <unsigned int M, unsigned int N, unsigned int R, typename B>
-    auto integrate(const B& basis, const Element<M, N, R>& e, int i , int j) const{
-      // express gradient of basis function over e in terms of gradient of basis function defined over the reference element.
-      // This entails to compute (J^{-1})^T * \Nabla phi_i.
-      Eigen::Matrix<double, N, M> invJ = e.invBarycentricMatrix().transpose(); // (J^{-1})^T = invJ
-      return basis[i]*(invJ*basis[j].derive()).dot(b_);
+    // approximates the contribution of this operator for the (i,j)-th element of the discretization matrix
+    // IMPORT_MEM_BUFFER_SYMBOLS makes the proper unpack of the mem_buffer tuple by introducing a set of symbols,
+    // symbols are set via field pointers by the assembly loop. See BilinearFormExpressions.h for its definition
+    template <typename... Args>
+    auto integrate(const std::tuple<Args...>& mem_buffer) const {
+      IMPORT_MEM_BUFFER_SYMBOLS(mem_buffer);
+      return psi_i*(invJ*NablaPsi_j).dot(b_); // \psi_i*b.dot(\nabla \psi_j)
     }
   };  
   // template argument deduction guide

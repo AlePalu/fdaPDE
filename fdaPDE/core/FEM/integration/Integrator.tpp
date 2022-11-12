@@ -2,18 +2,17 @@
 // value in the matrix discretizing the form. This method is used as part of the assembly loop in the computation of the
 // discretization matrix of the differential operator L
 template <unsigned int M, unsigned int R, unsigned int K>
-template <unsigned int N, typename B, typename F>
-double Integrator<M,R,K>::integrate(const B& basis, const Element<M,N,R>& e, int i , int j, const F& bilinearForm) const{
+template <typename F, unsigned int N, typename E>
+double Integrator<M,R,K>::integrate(const Element<M,N,R>& e, E& f) const{
   // apply quadrature rule
   double value = 0;
-  // builds the callable to integrate here from the bilinear form passed as argument
-  auto f = bilinearForm.integrate(basis, e, i, j); // let the compiler deduce the type of the expression template!
   for(size_t iq = 0; iq < integrationTable_.num_nodes; ++iq){
-    // the field produced by a bilinear form is by construction evaluable at any spatial point
+    // wrap quadrature point (stored as std::array<>) to an M-dimensional SVector
     SVector<M> p = SVector<M>(integrationTable_.nodes[iq].data());
-    // space-varying case: evaluate coefficients at the quadrature node
-    if constexpr(F::is_space_varying)
+    if constexpr(std::remove_reference<F>::type::is_space_varying){
+      // space-varying case: evaluate coefficients at the quadrature nodes
       f.eval_parameters(integrationTable_.num_nodes*e.ID() + iq);
+    }
     value += f(p) * integrationTable_.weights[iq];
   }
   // correct for measure of domain (element e)
@@ -31,7 +30,7 @@ double Integrator<M,R,K>::integrate(const Element<M,N,R>& e, const F& f, const t
   // execute quadrature rule.
   for(size_t iq = 0; iq < integrationTable_.num_nodes; ++iq){
     SVector<M> p = SVector<M>(integrationTable_.nodes[iq].data());
-    if constexpr(std::is_base_of<FieldExpr<F>, F>::value){
+    if constexpr(std::is_base_of<ScalarExpr<F>, F>::value){
       // functor f is evaluable at any point. This is the case if the integrand f is given by
       // its analytical expression. Observe that all and only field expressions are accepted.
       SVector<N> Jp = e.barycentricMatrix()*p + e.coords()[0]; // map quadrature point on physical element e
