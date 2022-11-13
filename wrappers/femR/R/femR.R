@@ -1,7 +1,7 @@
-
-#' @useDynLib femR, .registration = TRUE
 #' @importFrom Rcpp evalCpp
+#' @useDynLib femR, .registration = TRUE
 #' @name femR
+NULL
 
 #' Prova
 #' @return A vector
