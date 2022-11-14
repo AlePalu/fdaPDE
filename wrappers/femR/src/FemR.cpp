@@ -85,7 +85,7 @@ template<unsigned int M, unsigned int N, unsigned int R> using R_PDE_isotropic =
 using R_PDE_isotropic_2D_ORDER_1 = R_PDE_isotropic<2,2,1>;
 using R_PDE_isotropic_2D_ORDER_2 = R_PDE_isotropic<2,2,2>;
 
-RCPP_MODULE(pde) {
+RCPP_MODULE(PDE_2D_isotropic_ORDER_1) {
   Rcpp::class_<R_PDE_isotropic_2D_ORDER_1>("PDE_2D_isotropic_ORDER_1")
     .constructor<Rcpp::List>()
     .method("get_quadrature_nodes", &R_PDE_isotropic_2D_ORDER_1::get_quadrature_nodes)

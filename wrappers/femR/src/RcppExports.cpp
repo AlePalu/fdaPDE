@@ -30,12 +30,12 @@ BEGIN_RCPP
 END_RCPP
 }
 
-RcppExport SEXP _rcpp_module_boot_pde();
+RcppExport SEXP _rcpp_module_boot_PDE_2D_isotropic_ORDER_1();
 RcppExport SEXP _rcpp_module_boot_Mesh2D();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_femR_rcpp_hello_world", (DL_FUNC) &_femR_rcpp_hello_world, 8},
-    {"_rcpp_module_boot_pde", (DL_FUNC) &_rcpp_module_boot_pde, 0},
+    {"_rcpp_module_boot_PDE_2D_isotropic_ORDER_1", (DL_FUNC) &_rcpp_module_boot_PDE_2D_isotropic_ORDER_1, 0},
     {"_rcpp_module_boot_Mesh2D", (DL_FUNC) &_rcpp_module_boot_Mesh2D, 0},
     {NULL, NULL, 0}
 };
