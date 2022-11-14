@@ -67,7 +67,7 @@ class R_PDE {
             pde_.init();
             pde_.solve();
             
-            DVector<double> solution   = *(pde_.solution());
+            DMatrix<double> solution   = *(pde_.solution());
             SpMatrix<double> Stiffness = *(pde_.R1());
             SpMatrix<double> Mass      = *(pde_.R0());
             
