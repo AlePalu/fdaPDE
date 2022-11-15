@@ -101,4 +101,17 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_1) {
     ;
 }
 
+RCPP_MODULE(PDE_2D_isotropic_ORDER_2) {
+  Rcpp::class_<R_PDE_isotropic_2D_ORDER_2>("PDE_2D_isotropic_ORDER_2")
+    .constructor<Rcpp::List>()
+    .method("get_quadrature_nodes", &R_PDE_isotropic_2D_ORDER_2::get_quadrature_nodes)
+    .method("set_dirichletBC",      &R_PDE_isotropic_2D_ORDER_2::set_dirichletBC)
+    .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_2::set_forcingTerm)
+    .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_2::set_PDEparameters)
+    .method("force",                &R_PDE_isotropic_2D_ORDER_2::force)
+    .method("solve",                &R_PDE_isotropic_2D_ORDER_2::solve)
+    ;
+}
+
+
 
