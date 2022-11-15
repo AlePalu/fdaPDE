@@ -34,7 +34,6 @@ class R_PDE {
         Mesh<M,N,R> mesh_;
         PDE<M,N,R, BilinearForm, DMatrix<double>> pde_;
     
-        DMatrix<double> dirichletBC_;
         DMatrix<double> solution_;
     
     public:    
@@ -42,7 +41,7 @@ class R_PDE {
                                               Rcpp::as<DMatrix<int>>(R_Mesh["neigh"]), Rcpp::as<DMatrix<int>>(R_Mesh["boundary"])), pde_(mesh_){}
         
         void set_dirichletBC(const Rcpp::NumericVector& R_BC){ 
-            dirichletBC_ = Rcpp::as<DMatrix<double>>(R_BC);
+            pde_.setDirichletBC(Rcpp::as<DMatrix<double>>(R_BC));
         };
         
         void set_forcingTerm(const Rcpp::NumericVector& R_forcingTerm){

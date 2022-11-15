@@ -29,8 +29,8 @@ for(i in 1:N){
     PDE <- new(PDE_2D_isotropic_ORDER_1, square)
     PDE$set_PDEparameters(PDE_parameters)
     
-    #dirichletBC <- as.matrix(rep(0., times = dim(square$nodes)[1]))
-    #PDE$set_dirichletBC(dirichletBC)
+    dirichletBC <- as.matrix(rep(0., times = dim(square$nodes)[1]))
+    PDE$set_dirichletBC(dirichletBC)
 
     quadrature_nodes <- PDE$get_quadrature_nodes()
     cat("############ ", i , " ############\n")
