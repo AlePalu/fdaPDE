@@ -62,6 +62,10 @@ class R_PDE {
             return pde_.integrator().quadratureNodes(mesh_);
         };
         
+        DMatrix<double> force() const{
+            return *pde_.force();
+        }
+        
         Rcpp::List solve(){
             
             pde_.init();
@@ -69,7 +73,8 @@ class R_PDE {
             
             DMatrix<double> solution   = *(pde_.solution());
             SpMatrix<double> Stiffness = *(pde_.R1());
-            SpMatrix<double> Mass      = *(pde_.R0());
+            SpMatrix<double> Mass = *(pde_.R0());
+            
             
             return Rcpp::List::create(Rcpp::Named("solution")     = solution,
                                       Rcpp::Named("Stiffness")    = Stiffness,
@@ -92,41 +97,9 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_1) {
     .method("set_dirichletBC",      &R_PDE_isotropic_2D_ORDER_1::set_dirichletBC)
     .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_1::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_1::set_PDEparameters)
+    .method("force",                &R_PDE_isotropic_2D_ORDER_1::force)
     .method("solve",                &R_PDE_isotropic_2D_ORDER_1::solve)
     ;
-}
-
-template<unsigned int M, unsigned int N, unsigned int R>
-Mesh<M,N,R> create_mesh(const Rcpp::NumericMatrix& points, const Rcpp::IntegerMatrix& edges,
-            const Rcpp::IntegerMatrix& elements, const Rcpp::IntegerMatrix& neigh, const Rcpp::IntegerMatrix boundary){
-            
-    Mesh<M,N,R> mesh_(Rcpp::as<DMatrix<double>>(points), 
-                      Rcpp::as<DMatrix<int>>(edges), 
-                      Rcpp::as<DMatrix<int>>(elements), 
-                      Rcpp::as<DMatrix<int>>(neigh), 
-                      Rcpp::as<DMatrix<int>>(boundary));            
-    return mesh_;
-}
-
-// [[Rcpp::export]]
-Rcpp::List rcpp_hello_world(const Rcpp::NumericMatrix& points, const Rcpp::IntegerMatrix& edges,
-            const Rcpp::IntegerMatrix& elements, const Rcpp::IntegerMatrix& neigh, const Rcpp::IntegerMatrix boundary, 
-            const double& diffusion, const Rcpp::NumericMatrix& transport, const double& reaction) {
-    
-    auto mesh_ = create_mesh<2,2,1>(points, edges, elements, neigh, boundary);
-    auto L = diffusion*Laplacian() + Gradient(Rcpp::as<DVector<double>>(transport)) + reaction*Identity();
-    DMatrix<double> u; // forcing term u
-    u.resize(mesh_.elements()*3, 1);
-    u.fill(0);
-    
-    // define differential problem
-    PDE problem(mesh_, L, u);
-    problem.init();
-    problem.solve();
-    
-    Rcpp::List z = Rcpp::List::create( Rcpp::Named("solution") = Rcpp::NumericMatrix(Rcpp::wrap((*problem.solution())))) ;
-
-    return z ;
 }
 
 

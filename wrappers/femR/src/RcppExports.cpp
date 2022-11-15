@@ -11,32 +11,11 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// rcpp_hello_world
-Rcpp::List rcpp_hello_world(const Rcpp::NumericMatrix& points, const Rcpp::IntegerMatrix& edges, const Rcpp::IntegerMatrix& elements, const Rcpp::IntegerMatrix& neigh, const Rcpp::IntegerMatrix boundary, const double& diffusion, const Rcpp::NumericMatrix& transport, const double& reaction);
-RcppExport SEXP _femR_rcpp_hello_world(SEXP pointsSEXP, SEXP edgesSEXP, SEXP elementsSEXP, SEXP neighSEXP, SEXP boundarySEXP, SEXP diffusionSEXP, SEXP transportSEXP, SEXP reactionSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type points(pointsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type edges(edgesSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type elements(elementsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type neigh(neighSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix >::type boundary(boundarySEXP);
-    Rcpp::traits::input_parameter< const double& >::type diffusion(diffusionSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type transport(transportSEXP);
-    Rcpp::traits::input_parameter< const double& >::type reaction(reactionSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world(points, edges, elements, neigh, boundary, diffusion, transport, reaction));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 RcppExport SEXP _rcpp_module_boot_PDE_2D_isotropic_ORDER_1();
-RcppExport SEXP _rcpp_module_boot_Mesh2D();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_femR_rcpp_hello_world", (DL_FUNC) &_femR_rcpp_hello_world, 8},
     {"_rcpp_module_boot_PDE_2D_isotropic_ORDER_1", (DL_FUNC) &_rcpp_module_boot_PDE_2D_isotropic_ORDER_1, 0},
-    {"_rcpp_module_boot_Mesh2D", (DL_FUNC) &_rcpp_module_boot_Mesh2D, 0},
     {NULL, NULL, 0}
 };
 
