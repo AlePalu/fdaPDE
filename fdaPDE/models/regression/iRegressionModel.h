@@ -11,7 +11,8 @@ using fdaPDE::models::iStatModel;
 namespace fdaPDE {
 namespace models {
 
-#define STAT_MODEL_X_BLK "X" // design matrix
+#define DESIGN_MATRIX_BLK "X" // design matrix
+#define WEIGHTS_BLK "W" // weights for heteroscedastic observations
   
   // base class for any regression model
   template <typename PDE>
@@ -25,12 +26,14 @@ namespace models {
     iRegressionModel(const iRegressionModel& rhs) { pde_ = rhs.pde_; }
 
     // getters
-    std::size_t q() const { return df_.hasBlock(STAT_MODEL_X_BLK) ?
-	df_.template get<double>(STAT_MODEL_X_BLK).cols() : 0; }
-    const DMatrix<double>& X() const { return df_.template get<double>(STAT_MODEL_X_BLK); } // covariates
-
+    std::size_t q() const { return df_.hasBlock(DESIGN_MATRIX_BLK) ?
+	df_.template get<double>(DESIGN_MATRIX_BLK).cols() : 0; }
+    const DMatrix<double>& X() const { return df_.template get<double>(DESIGN_MATRIX_BLK); } // covariates
+    auto W() const { return df_.template col<double>(WEIGHTS_BLK, 0); } // observations' weights
+    
     // utilities
     bool hasCovariates() const { return q() != 0; } // true if the model has a parametric part
+    bool hasWeights() const { return df_.hasBlock(WEIGHTS_BLK); }
     
     // abstract part of the interface, must be implemented by concrete models   
     // getters to problem's solution (estimate of spatial field, PDE misfit and parametric vector)
@@ -48,7 +51,9 @@ namespace models {
   IMPORT_STAT_MODEL_SYMBOLS(E)			   \
   using iRegressionModel<E>::q;			   \
   using iRegressionModel<E>::X;			   \
+  using iRegressionModel<E>::W;			   \
   using iRegressionModel<E>::hasCovariates;	   \
+  using iRegressionModel<E>::hasWeights;	   \
 
   // trait to detect if a type implements iRegressionModel
   template <typename T>
