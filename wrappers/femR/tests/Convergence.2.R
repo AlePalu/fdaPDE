@@ -23,15 +23,15 @@ mesh <- fdaPDE::refine.mesh.2D(mesh=mesh, minimum_angle=30, maximum_area=0.05)
 
 for(i in 1:N){
     
-    mesh <- fdaPDE::refine.mesh.2D(mesh = mesh, minimum_angle=30, maximum_area=0.05/(i+1))
+    mesh <- fdaPDE::refine.by.splitting.mesh.2D(mesh = mesh)
     
     square <- list(nodes= mesh$nodes, edges= mesh$segments, elements= mesh$triangles, neigh= mesh$neighbors, boundary= mesh$nodesmarkers)
     
     PDE <- new(PDE_2D_isotropic_ORDER_2, square)
     PDE$set_PDEparameters(PDE_parameters)
     
-    #dirichletBC <- as.matrix(rep(0., times = dim(square$nodes)[1]))
-    #PDE$set_dirichletBC(dirichletBC)
+    dirichletBC <- as.matrix(rep(0., times = dim(square$nodes)[1]))
+    PDE$set_dirichletBC(dirichletBC)
 
     quadrature_nodes <- PDE$get_quadrature_nodes()
     cat("############ ", i , " ############\n")
