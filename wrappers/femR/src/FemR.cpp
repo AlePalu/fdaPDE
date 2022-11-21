@@ -61,6 +61,10 @@ class R_PDE {
             return pde_.integrator().quadratureNodes(mesh_);
         };
         
+        DMatrix<double> get_dofs_coordinates() const {
+            return mesh_.dofCoords();
+        };
+        
         DMatrix<double> force() const{
             return *pde_.force();
         }
@@ -96,6 +100,7 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_1) {
     .method("set_dirichletBC",      &R_PDE_isotropic_2D_ORDER_1::set_dirichletBC)
     .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_1::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_1::set_PDEparameters)
+    .method("get_dofs_coordinates", &R_PDE_isotropic_2D_ORDER_1::get_dofs_coordinates)
     .method("force",                &R_PDE_isotropic_2D_ORDER_1::force)
     .method("solve",                &R_PDE_isotropic_2D_ORDER_1::solve)
     ;
@@ -108,6 +113,7 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_2) {
     .method("set_dirichletBC",      &R_PDE_isotropic_2D_ORDER_2::set_dirichletBC)
     .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_2::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_2::set_PDEparameters)
+    .method("get_dofs_coordinates", &R_PDE_isotropic_2D_ORDER_2::get_dofs_coordinates)
     .method("force",                &R_PDE_isotropic_2D_ORDER_2::force)
     .method("solve",                &R_PDE_isotropic_2D_ORDER_2::solve)
     ;
