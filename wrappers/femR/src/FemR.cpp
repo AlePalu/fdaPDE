@@ -66,7 +66,7 @@ class R_PDE {
         };
         
         DMatrix<double> force() const{
-            return *pde_.force();
+            return pde_.force();
         }
         
         Rcpp::List solve(){
@@ -74,9 +74,9 @@ class R_PDE {
             pde_.init();
             pde_.solve();
             
-            DMatrix<double> solution   = *(pde_.solution());
-            SpMatrix<double> Stiffness = *(pde_.R1());
-            SpMatrix<double> Mass = *(pde_.R0());
+            DMatrix<double> solution   = pde_.solution();
+            SpMatrix<double> Stiffness = pde_.R1();
+            SpMatrix<double> Mass = pde_.R0();
             
             
             return Rcpp::List::create(Rcpp::Named("solution")     = solution,
