@@ -22,21 +22,17 @@ namespace MESH{
   template <unsigned int R> using SurfaceElement = Element<2,3,R>;
   template <unsigned int R> using NetworkElement = Element<1,2,R>;
 
-  // compile time evaluation of the number of nodes of a given element given its local dimension and order
+  // compile time evaluation of the number of degrees of freedom associated to an element of dimension M and order R
   constexpr unsigned int ct_nnodes(const unsigned int M, const unsigned int R) {
     return ct_factorial(M+R)/(ct_factorial(M)*ct_factorial(R));
   }
-  // compile time evaluation of the number of vertices of a given element
+  // number of vertices of an M-dimensional simplex
   constexpr unsigned int ct_nvertices(const unsigned int M) { return M+1; }
-
-  // A single mesh element ( defaulted to linear finite element)
-  // we assume that the first M+1 entries of any internal data structure handled by Element refer to the **vertices** of the element,
-  // any other entry after the first (M+1)s are here to support functional informations, i.e. to build a functional basis of the proper order
-  // over the element. Moreover, observe that the ordering of the vertices is of no importance and we simply adopt the same ordering coming
-  // from mesh data (e.g. informations stored in .csv files or directly coming from front-ends).
-  // Geometrical operations handled by the MESH module are only based on vertex nodes (there is no extra-knowledge from the perspective of the MESH
-  // module in nodes which are not vertices). As such any internal implementation regarding the interface exposed by Element doesn't make
-  // use of any node which is not a vertex one.
+  // number of edges of an M-dimensional simplex
+  constexpr unsigned int ct_nedges(const unsigned int M) { return (M*(M+1))/2; }
+  
+  // A single mesh element. This object represents the main **geometrical** abstraction of a physical element.
+  // No functional information is carried by instances of this object.
   template <unsigned int M, unsigned int N, unsigned int R>
   class Element{
   private:
@@ -46,8 +42,7 @@ namespace MESH{
     std::array<SVector<N>,  ct_nvertices(M)> coords_{};
     // ID of the neighboring elements, use std::vector since number of neighboring elements is not always known at compile time
     std::vector<int> neighbors_{};
-    // boundary informations. boundary_[i] == 1 <-> node with ID nodeIDs_[i] is on boundary
-    std::array<std::size_t, ct_nvertices(M)> boundary_{};
+    bool boundary_; // true if the element has at least one vertex on the boundary
         
     // matrices defining the affine transformation from cartesian to barycentric coordinates and viceversa
     Eigen::Matrix<double, N, M> barycentricMatrix_{};
@@ -58,7 +53,7 @@ namespace MESH{
     // constructor
     Element() = default;  
     Element(std::size_t ID, const std::array<std::size_t, ct_nvertices(M)>& nodeIDs, const std::array<SVector<N>, ct_nvertices(M)>& coords,
-	    const std::vector<int>& neighbors, const std::array<std::size_t, ct_nvertices(M)>& boundary);
+	    const std::vector<int>& neighbors, bool boundary);
     
     // getters (read-only mode)
     const std::array<SVector<N>, ct_nvertices(M)> coords() const { return coords_; }
@@ -84,15 +79,9 @@ namespace MESH{
     // compute bounding box of this element. A bounding box is the smallest rectangle containing the element
     // this construction is usefull in searching problems.
     std::pair<SVector<N>, SVector<N>> boundingBox() const;
-
-    // returns true if the element has at least one node on the boundary
-    bool isOnBoundary(void) const;
-    // returns a vector of pairs: <node id, node coordinates> for any node of the element on the boundary of the mesh
-    std::vector<std::pair<std::size_t, SVector<N>>> boundaryNodes() const;
-    // returns the vector space passing throught this element
-    VectorSpace<M, N> spannedSpace() const;
-    // returns the measure of the element
-    double measure() const { return measure_; }
+    bool isOnBoundary() const { return boundary_; } // true if the element has at least one node on the boundary
+    VectorSpace<M, N> spannedSpace() const; // vector space passing throught this element
+    double measure() const { return measure_; } // measure of the element
     
     // subscript operator
     SVector<N> operator[](std::size_t i) const {

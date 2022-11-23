@@ -4,32 +4,37 @@ template <unsigned int M, unsigned int N, unsigned int R>
 void Mesh<M,N,R>::compute_basis_support(const DMatrix<int>& boundary) {
   // algorithm initialization
   int next = numNodes_; // next valid ID to assign
-  std::unordered_map<std::pair<int, int>, int, fdaPDE::pair_hash> assigned; // map of already assigned IDs
-  std::size_t col = 0; // column of the elements_ table to change
+  // map of already assigned IDs
+  std::unordered_map<std::pair<int, int>, std::array<int, n_dof_per_edge>, fdaPDE::pair_hash> assigned;
+  std::size_t col = 0; // current column of the elements_ table to change
   std::vector<bool> onBoundary(ct_nnodes(M,R)*numNodes_, false);
   
   // start enumeration
   for(std::size_t elem = 0; elem < elements_.rows(); ++elem){
     // consider all pairs of nodes (all edges)
-    for(std::size_t i = 0; i < M+1; ++i){
-      for(std::size_t j = i+1; j < M+1; ++j){
+    for(std::size_t i = 0; i < n_vertices; ++i){
+      for(std::size_t j = i+1; j < n_vertices; ++j){
 	// check if edge (elements_[i], elements_[j]) has an already assigned number
 	std::pair<int, int> edge = std::minmax(elements_(elem,i), elements_(elem,j));
-	
-	// map edge to a unique index: (l,h) -> l*numNodes_ + h;
 	auto it = assigned.find(edge);
 	if(it != assigned.end()){ // there is an already assigned index
-	  elements_(elem, M+1+col) = it->second;
-	  assigned.erase(it); // free space, an order 2 node cannot be shared more than 2 times!
+	  for(std::size_t z = 0; z < n_dof_per_edge; ++z, ++col){
+	    elements_(elem, M+1+col) = it->second[z];
+	  }
+	  assigned.erase(it); // free space, an order R>1 node cannot be shared more than 2 times!
 	}else{
-	  elements_(elem, M+1+col) = next;
-	  assigned[edge] = next;
-	  // new node is on boundary iff both endpoints of its edge are on boundary
-	  if(boundary(edge.first,0) && boundary(edge.second,0)) onBoundary[next] = true;
-	  next++; // increase next ID to assign
+	  for(std::size_t z = 0; z < n_dof_per_edge; ++z, ++col, ++next){
+	    elements_(elem, M+1+col) = next;
+	    assigned[edge][z] = next;
+	    // new node is on boundary iff both endpoints of its edge are on boundary
+	    if(boundary(edge.first,0) && boundary(edge.second,0)) onBoundary[next] = true;
+	  }
 	}
-	col++;
       }
+    }
+    // insert not-shared dofs if required (nodes internal to the current element)
+    for(std::size_t i = 0; i < n_dof_internal; ++i, ++col, ++next){
+      elements_(elem, M+1+col) = next;
     }
     col = 0; // reset column counter
   }
@@ -40,7 +45,7 @@ void Mesh<M,N,R>::compute_basis_support(const DMatrix<int>& boundary) {
   for(std::size_t i = numNodes_; i < dof_; ++i){ // adjust for new nodes of the enumeration
     if(onBoundary[i]) boundary_(i,0) = 1;
     else boundary_(i,0) = 0;
-  }  
+  }
   return;
 }
 
@@ -158,15 +163,15 @@ void Mesh<M,N,R>::fill_cache() {
     // number of neighbors may be not known at compile time in case linear network elements are employed, use a dynamic
     // data structure to handle 1.5D case as well transparently
     std::vector<int> neighbors{};
-    std::array<std::size_t, ct_nvertices(M)> boundary{};
-  
+    // boundary informations, the element is on boundary <-> at least one node with ID pointData[i] is on boundary
+    bool boundary = false;
+    
     for(size_t i = 0; i < ct_nvertices(M); ++i){
       SVector<N> node(points_.row(pointData[i])); // coordinates of node
       coords[i]   = node;
       // global ID of the node in the mesh
       nodeIDs[i]  = pointData[i];
-      // boundary informations, boundary[i] == 1 <-> node with ID pointData[i] is on boundary
-      boundary[i] = boundary_(pointData[i]);
+      boundary |= (boundary_(pointData[i]) == 1);
 
       if constexpr(!is_linear_network<M, N>::value){
 	// from triangle documentation: The first neighbor of triangle i is opposite the first corner of triangle i, and so on.
@@ -216,7 +221,7 @@ DMatrix<double> Mesh<M,N,R>::dofCoords() const {
       auto e = *cache_[i]; // take pointer to current physical element
       for(std::size_t j = ct_nvertices(M); j < ct_nnodes(M,R); ++j){ // cycle only on non-vertex points
 	if(visited.find(dofs[j]) == visited.end()){ // not yet mapped dof
-	  // map points from reference to physical element and store
+	  // map points from reference to physical element
 	  coords.row(dofs[j]) = e.barycentricMatrix()*refCoords[j].template tail<M>() + e.coords()[0];
 	  visited.insert(dofs[j]);
 	}
@@ -225,4 +230,3 @@ DMatrix<double> Mesh<M,N,R>::dofCoords() const {
     return coords;
   }
 }
-
