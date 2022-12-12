@@ -6,25 +6,25 @@
 // fields test suites
 #include "core/ScalarFieldTest.cpp"
 #include "core/VectorFieldTest.cpp"
-// OPT test suites
-// #include "GridOptimizerTest.cpp"
-// #include "IterativeOptimizerTest.cpp"
-// #include "OptimizerExtensionTest.cpp"
 // MESH test suites
 #include "core/MeshTest.cpp"
 #include "core/ElementTest.cpp"
 #include "core/SearchEngineTest.cpp"
-// NLA test suites
+// // NLA test suites
 #include "core/FSPAITest.cpp"
 #include "core/VectorSpaceTest.cpp"
-// FEM test suites
+#include "core/KroneckerProductTest.cpp"
+// // FEM test suites
 #include "core/LagrangianBasisTest.cpp"
 #include "core/IntegratorTest.cpp"
 #include "core/BilinearFormsTest.cpp"
 #include "core/PDESolutionsTest.cpp"
 // regression module test suites
 #include "models/SRPDETest.cpp"
+// space-time module test suites
 #include "core/SplineTest.cpp"
+#include "models/SpaceTimeTest.cpp"
+#include "models/STRPDETest.cpp"
 
 int main(int argc, char **argv){
   // start testing
