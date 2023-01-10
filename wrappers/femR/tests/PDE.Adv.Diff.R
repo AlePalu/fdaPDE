@@ -3,10 +3,12 @@ cat("########       ORDER 1       ########\n\n")
 rm(list=ls())
 library(Rcpp)
 library(roxygen2)
-#library(latex2exp)
+library(latex2exp)
 roxygenise()
 
 library(fdaPDE)
+rm(list=ls())
+source("tests/utils.R")
 
 W_ <- 1.
 R_ <- 1.
@@ -62,7 +64,7 @@ for(i in 1:N){
     mesh <- fdaPDE::refine.by.splitting.mesh.2D(mesh = mesh)
     
     square <- list(nodes= mesh$nodes, edges= mesh$segments, elements= mesh$triangles, neigh= mesh$neighbors, boundary= mesh$nodesmarkers)
-    h[i] <- 1/nrow(square$elements)
+    h[i] <- compute_h(mesh)$h_max
     
     PDE <- new(PDE_2D_isotropic_ORDER_1, square)
     PDE$set_PDEparameters(PDE_parameters)
@@ -86,20 +88,20 @@ for(i in 1:N){
 q = log2(errors.L2[1:(N-1)]/errors.L2[2:N])
 cat("order = ", q, "\n")
 
-#imgdir_ = "imgs/"
-#if(!dir.exists(imgdir_))
-#    dir.create(imgdir_)
+imgdir_ = "imgs/"
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
 
-#pdf(paste(imgdir_,"rates_order_adv_diff_1.pdf",sep=""))
-#plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-#        ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),
-#        xlab = TeX("$log_2(h)$"), ylab="", cex.lab=1.25)
-#lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-#legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^2$")), 
-#        col=c("red", "black"), 
-#        lty = 2, 
-#        cex=1.25)
-#dev.off()
+pdf(paste(imgdir_,"adv_diff_rates_order_1.pdf",sep=""))
+plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
+        ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),
+        xlab = TeX("$h$"), ylab="", cex.lab=1.25)
+lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
+legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^2$")), 
+        col=c("red", "black"), 
+        lty = 2, 
+        cex=1.25)
+dev.off()
 
 cat("#####################################\n\n")
 
