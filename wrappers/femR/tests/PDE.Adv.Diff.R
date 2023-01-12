@@ -50,6 +50,13 @@ u_ex <- as.matrix(exact_solution(femR::unit_square$nodes))
 error.L2 <- sqrt(sum(result$Mass %*% (u_ex - result$solution)^2))
 cat("L2 error = ", error.L2, "\n")
 
+x = seq(0,1,length.out=50)
+y = x
+exact = matrix(0, nrow=length(x), ncol=length(y))
+for(i in 1:length(x)){
+  for(j in 1:length(y))
+    exact[i,j] = exact_solution(cbind(x[i],y[j])) 
+}
 cat("#####################################\n\n")
 
 cat("############ Convergence ############\n\n")
@@ -94,7 +101,7 @@ if(!dir.exists(imgdir_))
 
 pdf(paste(imgdir_,"adv_diff_rates_order_1.pdf",sep=""))
 plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),
+        ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h^2), log2(errors.L2))+2),
         xlab = TeX("$h$"), ylab="", cex.lab=1.25)
 lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
 legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^2$")), 

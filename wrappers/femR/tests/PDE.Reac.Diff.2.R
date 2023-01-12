@@ -82,10 +82,10 @@ if(!dir.exists(imgdir_))
 
 pdf(paste(imgdir_,"reac_diff_rates_order_2.pdf",sep=""))
 plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^3), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),
+        ylim = c(min(log2(h^3), log2(errors.L2)), max(log2(h^3), log2(errors.L2))+2),
         xlab = TeX("$h$"), ylab="", cex.lab=1.25)
 lines(log2(h), log2(h^3), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^2$")), 
+legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^3$")), 
         col=c("red", "black"), 
         lty = 2, 
         cex=1.25)

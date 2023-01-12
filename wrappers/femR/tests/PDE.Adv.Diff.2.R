@@ -13,7 +13,7 @@ source("tests/utils.R")
 W_ <- 1.
 R_ <- 1.
 H_ <- 1.
-beta_ <- 1.
+beta_ <- 10.
 
 alpha_ <- H_ * beta_ / R_
 gamma_ <- pi * W_ / R_  
@@ -93,10 +93,10 @@ if(!dir.exists(imgdir_))
 
 pdf(paste(imgdir_,"adv_diff_rates_order_2.pdf",sep=""))
 plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),
+        ylim = c(min(log2(h^3), log2(errors.L2)), max(log2(h^3), log2(errors.L2))+2),
         xlab = TeX("$h$"), ylab="", cex.lab=1.25)
-lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^2$")), 
+lines(log2(h), log2(h^3), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
+legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^3$")), 
         col=c("red", "black"), 
         lty = 2, 
         cex=1.25)
