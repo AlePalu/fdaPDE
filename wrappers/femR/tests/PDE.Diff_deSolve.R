@@ -138,13 +138,20 @@ legend("topleft", legend=c("femR", "deSolve", TeX("$h^2$")),
 
 pdf(paste(imgdir_,"diff_times_order_1.pdf",sep=""))
 plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^2), log2(errors.l2)), max(log2(h), log2(errors.l2))+2),
-        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("log_2(time)"))
+        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("log_{2}(time) [s]"))
+lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2)
+legend("topright", legend=c("femR", "deSolve"), 
+        col=c("red", "blue"), 
+        lty = 2, 
+        cex=1.25)
+
+
+plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
+        ylim = c(min(log2(h^2), log2(times$femR)), max(log2(h), log2(times$femR))),
+        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("log_{2}(time)"))
 lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-lines(log2(h), log2(h), col = "black", type = "green4", pch = 16, lwd = 3, lty =2, cex = 2 )
-legend("topleft", legend=c("femR", "deSolve", TeX("$h^2$"), TeX("$h$")), 
-        col=c("red", "blue" "black", "green4"), 
+legend("topleft", legend=c("femR", "deSolve"), 
+        col=c("red", "blue" "black"), 
         lty = 2, 
         cex=1.25)
 dev.off()
