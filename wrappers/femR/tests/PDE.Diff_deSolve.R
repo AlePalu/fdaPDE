@@ -30,9 +30,6 @@ for(i in 1:length(N)){
   y.grid    <- setup.grid.1D(x.up = 0, x.down = 1, N = N[i])
   grid2D    <- setup.grid.2D(x.grid, y.grid)
   
-  #nodes <- expand.grid(x=grid2D$x.int, y = grid2D$y.int)
-  #mesh <- create.mesh.2D(nodes =nodes)
-  
   h[i] = max(grid2D$dx, grid2D$dy)
 
   D.grid    <- setup.prop.2D(value = Dx, y.value = Dy, grid = grid2D)
@@ -75,7 +72,7 @@ for(i in 1:length(N)){
 
   y = matrix(data = rep(1,times=N[i]*N[i]))
   y = matrix(data = rnorm(N[i]*N[i], mean = 1, sd =0.5))
-  # lrw (stodes)
+
   start_ = Sys.time()
   Y <- steady.2D(y=y,
                    dimens = c(N[i],N[i]), 
@@ -85,9 +82,6 @@ for(i in 1:length(N)){
   cat("deSolve ", times$deSolve[i], " s\n")
 
   y.hat <- matrix(Y$y, nrow=N[i], ncol=N[i])
-  par(mfrow=c(1,2))
-  image(y.ex, ask = FALSE, main = "exact")
-  image(y.hat, ask = FALSE, main = "estimate")
   errors.l2$deSolve[i] = rmse(Y$y, as.vector(y.ex))
   
   ###### femR ######
@@ -124,7 +118,7 @@ imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
     
-pdf(paste(imgdir_,"diff_rates_order_1.pdf",sep=""))
+pdf(paste(imgdir_,"diff_rates_order_1_deSolve.pdf",sep=""))
 par(mfrow=c(1,1))
 plot(log2(h), log2(errors.l2$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
         ylim = c(min(log2(h^2), log2(errors.l2$femR)), max(log2(h), log2(errors.l2$femR))+2),
@@ -135,23 +129,24 @@ legend("topleft", legend=c("femR", "deSolve", TeX("$h^2$")),
         col=c("red", "blue", "black"), 
         lty = 2, 
         cex=1.25)
+dev.off()
 
-pdf(paste(imgdir_,"diff_times_order_1.pdf",sep=""))
+pdf(paste(imgdir_,"diff_times_order_1_deSolve.pdf",sep=""))
 plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("log_{2}(time) [s]"))
+        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$time [s]$"))
 lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2)
 legend("topright", legend=c("femR", "deSolve"), 
         col=c("red", "blue"), 
         lty = 2, 
         cex=1.25)
+dev.off()
 
-
+png(paste(imgdir_,"diff_times_order_1_deSolve.png",sep=""))
 plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^2), log2(times$femR)), max(log2(h), log2(times$femR))),
-        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("log_{2}(time)"))
-lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
-legend("topleft", legend=c("femR", "deSolve"), 
-        col=c("red", "blue" "black"), 
+        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$time [s]$"))
+lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2)
+legend("topright", legend=c("femR", "deSolve"), 
+        col=c("red", "blue"), 
         lty = 2, 
         cex=1.25)
 dev.off()
