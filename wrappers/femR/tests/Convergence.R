@@ -1,8 +1,5 @@
-library(Rcpp)
-library(roxygen2)
 library(latex2exp)
-roxygenise()
-
+library(femR)
 library(fdaPDE)
 rm(list=ls())
 source("tests/utils.R")
@@ -59,6 +56,12 @@ imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
 
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+    
 pdf(paste(imgdir_,"diffusion_rates_order_1.pdf",sep=""))
 plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
         ylim = c(min(log2(h^2), log2(errors.L2)), max(log2(h), log2(errors.L2))+2),

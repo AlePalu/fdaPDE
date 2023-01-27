@@ -1,14 +1,12 @@
 cat("######## Reaction-Diffusion ########\n")
 cat("########       ORDER 1       ########\n\n")
-rm(list=ls())
-library(Rcpp)
-library(roxygen2)
-library(latex2exp)
-roxygenise()
-
+library(femR)
 library(fdaPDE)
-rm(list=ls())
+library(latex2exp)
+
 source("tests/utils.R")
+data("unit_square", package="femR")
+
 
 exact_solution <- function(points){
     return( exp(points[,1] + points[,2]) )
@@ -18,12 +16,12 @@ forcing <- function(points){
     return(0.) 
 }
 
-PDE <- new(PDE_2D_isotropic_ORDER_1, femR::unit_square)
+PDE <- new(PDE_2D_isotropic_ORDER_1, unit_square)
 
 PDE_parameters <- list("diffusion" = 1., "transport" = rbind(0., 0.), "reaction" = 2.)
 PDE$set_PDEparameters(PDE_parameters)
 
-dirichletBC <- as.matrix(exact_solution(femR::unit_square$nodes))
+dirichletBC <- as.matrix(exact_solution(unit_square$nodes))
 PDE$set_dirichletBC(dirichletBC)
 
 quadrature_nodes <- PDE$get_quadrature_nodes()
@@ -32,7 +30,7 @@ PDE$set_forcingTerm(as.matrix(f))
 
 result <- PDE$solve()
 
-u_ex <- as.matrix(exact_solution(femR::unit_square$nodes))
+u_ex <- as.matrix(exact_solution(unit_square$nodes))
 
 error.L2 <- sqrt(sum(result$Mass %*% (u_ex - result$solution)^2))
 cat("L2 error = ", error.L2, "\n")
@@ -45,7 +43,17 @@ for(i in 1:length(x)){
     exact[i,j] = exact_solution(cbind(x[i],y[j])) 
 }
 
-png("reac_diff.png")
+imgdir_ = "imgs/"
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+    
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+    
+png(paste(imgdir_,"reac_diff.png",sep=""))
 filled.contour(exact)
 dev.off()
 cat("#####################################\n\n")
@@ -89,6 +97,13 @@ cat("order = ", q, "\n")
 imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
+    
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+
 
 pdf(paste(imgdir_,"reac_diff_rates_order_1.pdf",sep=""))
 plot(log2(h), log2(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,

@@ -1,8 +1,7 @@
 cat("############ ORDER 2 #############\n\n")
 library(Rcpp)
-library(roxygen2)
 library(latex2exp)
-roxygenise()
+library(femR)
 
 library(fdaPDE)
 rm(list=ls())
@@ -59,6 +58,12 @@ imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
 
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+
 pdf(paste(imgdir_,"diffusion_rates_order_2.pdf",sep=""))
 plot(log(h), log(errors.L2), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
         ylim = c(min(log2(h^3), log2(errors.L2)), max(log2(h^3), log2(errors.L2))+2),
@@ -69,7 +74,7 @@ legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^3$")),
         lty = 2)
 dev.off()
 
-png(paste(imgdir_,"exact_solution.png",sep=""))
+png(paste(imgdir_,"diffusion_exact_solution.png",sep=""))
 xx <- seq(from=0, to=1., length.out=100)
 yy <- xx
 grid <- expand.grid(xx,yy)

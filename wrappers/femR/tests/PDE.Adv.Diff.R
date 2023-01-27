@@ -1,14 +1,11 @@
 cat("######## Advection-Diffusion ########\n")
 cat("########       ORDER 1       ########\n\n")
-rm(list=ls())
-library(Rcpp)
-library(roxygen2)
-library(latex2exp)
-roxygenise()
-
+library(femR)
 library(fdaPDE)
-rm(list=ls())
+library(latex2exp)
+
 source("tests/utils.R")
+data("unit_square", package="femR")
 
 W_ <- 1.
 R_ <- 1.
@@ -31,12 +28,12 @@ forcing <- function(points){
     return(gamma_ * sin(pi * points[,2])) 
 }
 
-PDE <- new(PDE_2D_isotropic_ORDER_1, femR::unit_square)
+PDE <- new(PDE_2D_isotropic_ORDER_1, unit_square)
 
 PDE_parameters <- list("diffusion" = 1., "transport" = rbind(-alpha_, 0.), "reaction" = 0.)
 PDE$set_PDEparameters(PDE_parameters)
 
-dirichletBC <- as.matrix(rep(0., times = dim(femR::unit_square$nodes)[1]))
+dirichletBC <- as.matrix(rep(0., times = dim(unit_square$nodes)[1]))
 PDE$set_dirichletBC(dirichletBC)
 
 quadrature_nodes <- PDE$get_quadrature_nodes()
@@ -45,7 +42,7 @@ PDE$set_forcingTerm(as.matrix(f))
 
 result <- PDE$solve()
 
-u_ex <- as.matrix(exact_solution(femR::unit_square$nodes))
+u_ex <- as.matrix(exact_solution(unit_square$nodes))
 
 error.L2 <- sqrt(sum(result$Mass %*% (u_ex - result$solution)^2))
 cat("L2 error = ", error.L2, "\n")
@@ -96,6 +93,12 @@ q = log2(errors.L2[1:(N-1)]/errors.L2[2:N])
 cat("order = ", q, "\n")
 
 imgdir_ = "imgs/"
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)
+
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
 

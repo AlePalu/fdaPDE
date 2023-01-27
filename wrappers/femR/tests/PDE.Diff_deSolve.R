@@ -1,7 +1,6 @@
 library(ReacTran)
 library(latex2exp)
-library(roxygen2)
-roxygenise()
+library(femR)
 
 rm(list=ls())
 graphics.off()
@@ -15,7 +14,7 @@ Dy    <- Dx <- -1.   # diffusion coeff, X- and Y-direction
 
 PDE_parameters <- list("diffusion" = 1., "transport" = matrix(0.,nrow=2,ncol=1), "reaction" = 0.)
 
-N = c(20,40,80,160) # int. nodes N[i]^2
+N = 4*c(20,40,80,160) # int. nodes N[i]^2
 
 errors.l2 <- list("deSolve" = rep(0, times = length(N)),
                   "femR" = rep(0, times = length(N)))
@@ -113,15 +112,20 @@ q$femR = log2(errors.l2$femR[1:(length(N)-1)]/errors.l2$femR[2:length(N)])
 cat("deSolve order = ", q$deSolve, "\n")
 cat("femR order = ", q$femR, "\n")
 
-
 imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
     
+domain_ = "2D/"
+imgdir_ = paste(imgdir_,domain_,sep="")
+
+if(!dir.exists(imgdir_))
+    dir.create(imgdir_)    
+    
 pdf(paste(imgdir_,"diff_rates_order_1_deSolve.pdf",sep=""))
 par(mfrow=c(1,1))
 plot(log2(h), log2(errors.l2$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        ylim = c(min(log2(h^2), log2(errors.l2$femR)), max(log2(h), log2(errors.l2$femR))+2),
+        ylim = c(min(log2(h^2), log2(errors.l2$femR)), max(log2(h), log2(errors.l2$femR))),
         xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$\\| u - u_{ex} \\|_{2}$"))
 lines(log2(h), log2(errors.l2$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
 lines(log2(h), log2(h^2), col = "black", type = "b", pch = 16, lwd = 3, lty =2, cex = 2 )
@@ -133,7 +137,8 @@ dev.off()
 
 pdf(paste(imgdir_,"diff_times_order_1_deSolve.pdf",sep=""))
 plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
-        xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$time [s]$"))
+     ylim = c(min(log2(times$femR),log2(times$deSolve)), max(times$femR, log2(times$deSolve))),
+     xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$time [s]$"))
 lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2)
 legend("topright", legend=c("femR", "deSolve"), 
         col=c("red", "blue"), 
@@ -143,6 +148,7 @@ dev.off()
 
 png(paste(imgdir_,"diff_times_order_1_deSolve.png",sep=""))
 plot(log2(h), log2(times$femR), col="red", type="b", pch =16, lwd = 3, lty = 2, cex = 2,
+     ylim = c(min(log2(times$femR),log2(times$deSolve)), max(log2(times$femR), log2(times$deSolve))),
         xlab = TeX("$h$"), ylab="", cex.lab=1.25, main=TeX("$time [s]$"))
 lines(log2(h), log2(times$deSolve), col = "blue", type = "b", pch = 16, lwd = 3, lty =2, cex = 2)
 legend("topright", legend=c("femR", "deSolve"), 
