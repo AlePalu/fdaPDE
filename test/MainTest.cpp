@@ -11,7 +11,6 @@
 #include "core/ElementTest.cpp"
 #include "core/SearchEngineTest.cpp"
 // NLA test suites
-#include "core/FSPAITest.cpp"
 #include "core/VectorSpaceTest.cpp"
 #include "core/KroneckerProductTest.cpp"
 // FEM test suites
@@ -19,12 +18,13 @@
 #include "core/IntegratorTest.cpp"
 #include "core/BilinearFormsTest.cpp"
 #include "core/PDESolutionsTest.cpp"
-// regression module test suites
-#include "models/SRPDETest.cpp"
-// space-time module test suites
+// space-time test suites
 #include "core/SplineTest.cpp"
 #include "models/SpaceTimeTest.cpp"
+// regression module test suites
+#include "models/SRPDETest.cpp"
 #include "models/STRPDETest.cpp"
+#include "models/GSRPDETest.cpp"
 // GCV test suites
 #include "calibration/GCVTest.cpp"
 #include "calibration/GCVNewtonTest.cpp"

@@ -15,6 +15,8 @@ using fdaPDE::core::NLA::SMW;
 #include "../../core/NLA/KroneckerProduct.h"
 using fdaPDE::core::NLA::SparseKroneckerProduct;
 using fdaPDE::core::NLA::Kronecker;
+#include "../../core/utils/DataStructures/BlockVector.h"
+using fdaPDE::BlockVector;
 // calibration module imports
 #include "../../calibration/iGCV.h"
 using fdaPDE::calibration::iGCV;
@@ -22,6 +24,7 @@ using fdaPDE::calibration::iGCV;
 #include "RegressionBase.h"
 using fdaPDE::models::RegressionBase;
 #include "../ModelTraits.h"
+using fdaPDE::models::Gaussian;
 
 namespace fdaPDE{
 namespace models{
@@ -39,7 +42,7 @@ namespace models{
     typedef SpaceTimeSeparableTag TimeRegularization;
     typedef RegressionBase<STRPDE<PDE, TimeRegularization, SamplingDesign, SolverType::Monolithic>> Base;
     SpMatrix<double> A_{}; // system matrix of non-parametric problem (2N x 2N matrix)
-    Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> invA_; // factorization of matrix A
+    fdaPDE::SparseLU<SpMatrix<double>> invA_; // factorization of matrix A
     DVector<double> b_{};  // right hand side of problem's linear system (1 x 2N vector)
   public:
     // import commonly defined symbols from base
@@ -72,6 +75,7 @@ namespace models{
     typedef SplineBasis<3> TimeBasis; // use cubic B-splines
     static constexpr Sampling sampling = SamplingDesign;
     static constexpr SolverType solver = SolverType::Monolithic;
+    typedef Gaussian DistributionType;
   };
 
   // implementation of STRPDE for parabolic space-time regularization, monolithic solver
@@ -84,7 +88,7 @@ namespace models{
     typedef SpaceTimeParabolicTag TimeRegularization;
     typedef RegressionBase<STRPDE<PDE, SpaceTimeParabolicTag, SamplingDesign, SolverType::Monolithic>> Base;
     SpMatrix<double> A_{}; // system matrix of non-parametric problem (2N x 2N matrix)
-    Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> invA_; // factorization of matrix A
+    fdaPDE::SparseLU<SpMatrix<double>> invA_; // factorization of matrix A
     DVector<double> b_{};  // right hand side of problem's linear system (1 x 2N vector)
   public:
     // import commonly defined symbols from base
@@ -102,7 +106,7 @@ namespace models{
     
     // ModelBase interface implementation
     virtual void solve(); // finds a solution to the smoothing problem
-
+    
     // iGCV interface implementation
     // virtual const DMatrix<double>& T(); // T = \Psi^T*Q*\Psi + \lambda*(R1^T*R0^{-1}*R1)
     // virtual const DMatrix<double>& Q(); // Q = W(I - H) = W - W*X*(X^T*W*X)^{-1}X^T*W
@@ -117,8 +121,9 @@ namespace models{
     typedef SpaceTimeParabolicTag RegularizationType;
     static constexpr Sampling sampling = SamplingDesign;
     static constexpr SolverType solver = SolverType::Monolithic;
+    typedef Gaussian DistributionType;
   };
-
+  
   // implementation of STRPDE for parabolic space-time regularization, monolithic solver
   template <typename PDE, Sampling SamplingDesign>
   class STRPDE<PDE, SpaceTimeParabolicTag, SamplingDesign, SolverType::Iterative>
@@ -129,12 +134,14 @@ namespace models{
     typedef SpaceTimeParabolicTag TimeRegularization;
     typedef RegressionBase<STRPDE<PDE, SpaceTimeParabolicTag, SamplingDesign, SolverType::Iterative>> Base;
     SpMatrix<double> A_{}; // system matrix of non-parametric problem (2N x 2N matrix)
-    Eigen::SparseLU<SpMatrix<double>, Eigen::COLAMDOrdering<int>> invA_; // factorization of matrix A
+    fdaPDE::SparseLU<SpMatrix<double>> invA_; // factorization of matrix A
     DVector<double> b_{};  // right hand side of problem's linear system (1 x 2N vector)
     
     // the functional minimized by the iterative scheme
     // J(f,g) = \sum_{k=1}^m (z^k - \Psi*f^k)^T*(z^k - \Psi*f^k) + \lambda_S*(g^k)^T*(g^k)
     double J(const DMatrix<double>& f, const DMatrix<double>& g) const;
+    // internal solve routine used by the iterative method
+    void solve(std::size_t t, BlockVector<double>& f_new, BlockVector<double>& g_new) const;
   public:
     // import commonly defined symbols from base
     IMPORT_REGRESSION_SYMBOLS;
@@ -167,8 +174,8 @@ namespace models{
     typedef SpaceTimeParabolicTag RegularizationType;
     static constexpr Sampling sampling = SamplingDesign;
     static constexpr SolverType solver = SolverType::Iterative;
+    typedef Gaussian DistributionType;
   };
-
   
 #include "STRPDE.tpp"
 }}

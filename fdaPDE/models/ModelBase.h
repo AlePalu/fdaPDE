@@ -34,8 +34,10 @@ namespace models {
     
     // setters
     void setDirichletBC(SpMatrix<double>& A, DMatrix<double>& b);
-    void setData(const BlockFrame<double, int>& df); // initialize model's data
+    void setData(const BlockFrame<double, int>& df); // initialize model's data by copying the supplied BlockFrame
+    BlockFrame<double, int>& data() { return df_; }  // direct write-access to model's internal data storage
     void setLambda(const SVector<n_smoothing_parameters<Model>::value>& lambda) { lambda_ = lambda; } 
+    void setPDE(const PDE& pde) { pde_ = std::make_shared<PDE>(pde); }
     
     // getters
     const BlockFrame<double, int>& data() const { return df_; }
@@ -46,7 +48,7 @@ namespace models {
     const Mesh<M,N,K>& domain() const { return pde_->domain(); }
     std::size_t n_basis() const { return pde_->domain().dof(); }; // number of basis functions used in space discretization
     std::size_t n_obs() const { return df_.template get<double>(OBSERVATIONS_BLK).rows(); } // number of observations
-    const ADT<M,N,K>& gse() { if(gse_ == nullptr){ gse_ = std::make_unique<ADT<M,N,K>>(domain()); } return *gse_; }
+    const ADT<M,N,K>& gse() { if(gse_ == nullptr){ gse_ = std::make_shared<ADT<M,N,K>>(domain()); } return *gse_; }
     SVector<n_smoothing_parameters<Model>::value> lambda() const { return lambda_; }
     
     // abstract part of the interface, must be implemented by concrete models
@@ -55,7 +57,7 @@ namespace models {
     virtual ~ModelBase() = default;
   protected:   
     std::shared_ptr<PDE> pde_; // regularizing term Lf - u and domain definition D
-    std::unique_ptr<ADT<M,N,K>> gse_; // geometric search engine
+    std::shared_ptr<ADT<M,N,K>> gse_; // geometric search engine
     BlockFrame<double, int> df_; // blockframe for data storage
     SVector<n_smoothing_parameters<Model>::value> lambda_; // vector of smoothing parameters
     

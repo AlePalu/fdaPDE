@@ -9,7 +9,7 @@ namespace fdaPDE {
 namespace models {
 
   // definition of common distributions from the exponential family
-
+  
   class Bernulli {
   private:
     double p_; // distribution parameter
@@ -19,18 +19,26 @@ namespace models {
     Bernulli(double p) : p_(p) {};
     // density function
     double pdf(std::size_t x) const { return x == 0 ? 1-p_ : p_; };
-    
-    // first order statistics
     double mean() const { return p_; }
-    double variance() const { return p_*(1-p_); };
+    // preprocess data to work with this distribution
+    void preprocess(DVector<double>& data) const {
+      for(std::size_t i = 0; i < data.rows(); ++i){
+	data[i] = 0.5 * (data[i] + 0.5);
+      }
+      return;
+    }
+    // vectorized operations
+    DMatrix<double> variance(const DMatrix<double>& x) const {
+      return x.array()*(1-x.array()); }                      // x*(1-x)
+    DMatrix<double> link(const DMatrix<double>& x) const {
+      return ((1 - x.array()).inverse()*x.array()).log();  } // log(x/(1-x)) 
+    DMatrix<double> inv_link(const DMatrix<double>& x) const {
+      return (1+((-x).array().exp())).inverse(); }           // 1/(1+exp(-x))
+    DMatrix<double> der_link(const DMatrix<double>& x) const {
+      return (x.array()*(1-x.array())).inverse(); }          // 1/(x*(1-x))
 
-    // link function
-    double link(double x) const { return std::log(x/(1-x)); };
-    double inv_link(double x) const { return 1/(1+std::exp(-x)); };
-    double der_link(double x) const { return 1/(x*(1-x)); };
-
-    // deviance
-    double deviance(std::size_t x) { return x == 0 ? 2*std::log(1/(1-p_)) : 2*std::log(1/p_); };
+    // deviance function
+    double deviance(double x, double y) { return y == 0 ? 2*std::log(1/(1-x)) : 2*std::log(1/x); };
   };
 
   class Poisson {
@@ -48,38 +56,26 @@ namespace models {
     Poisson(double l) : l_(l) {};
     // density function
     double pdf(std::size_t k) const { return std::pow(l_, k)*std::exp(-l_)/factorial(k); };
-
-    // any kind of preprocessing required for this distribution to work correctly
+    double mean() const { return l_; }    
+    // preprocess data to work with this distribution
     void preprocess(DVector<double>& data) const {
       for(std::size_t i = 0; i < data.rows(); ++i){
 	if(data[i] <= 0) data[i] = 1;
       }
       return;
     }
+    // vectorized operations
+    DMatrix<double> variance(const DMatrix<double>& x) {
+      return x; }                                            // x
+    DMatrix<double> link(const DMatrix<double>& x) const {
+      return x.array().log(); }                              // log(x)
+    DMatrix<double> inv_link(const DMatrix<double>& x) const {
+      return x.array().exp(); }                              // exp(x)
+    DMatrix<double> der_link(const DMatrix<double>& x) const {
+      return x.array().inverse(); }                          // 1/x
     
-    // first order statistics
-    double mean() const { return l_; }
-    double variance(double x) const { return x; };
-
-    inline DMatrix<double> variance(const DMatrix<double>& x) { return x; }
-    
-    // link function
-    double link(double x) const { return std::log(x); };
-
-    inline DMatrix<double> link(const DMatrix<double>& x) const {
-      return x.array().log();
-    }
-    
-    double inv_link(double x) const { return std::exp(x); };
-
-    inline DMatrix<double> inv_link(const DMatrix<double>& x) const { return x.array().exp(); }
-    
-    double der_link(double x) const { return 1/x; };
-
-    inline DMatrix<double> der_link(const DMatrix<double>& x) const { return x.array().inverse(); }
-    
-    // deviance
-    double deviance(std::size_t x) { return x > 0 ? x*std::log(x/l_) - (x-l_) : l_; };
+    // deviance function
+    double deviance(double x, double y) { return y > 0 ? y*std::log(y/x) - (y-x) : x; };
   };
 
   class Exponential {
@@ -91,18 +87,20 @@ namespace models {
     Exponential(double l) : l_(l) {};
     // density function
     double pdf(double x) const { return l_*std::exp(-l_*x); };
-    
-    // first order statistics
     double mean() const { return 1/l_; }
-    double variance() const { return 1/(l_*l_); };
-
-    // link function
-    double link(double x) const { return -1/x; };
-    double inv_link(double x) const { return -1/x; };
-    double der_link(double x) const { return 1/(x*x); };
-
-    // deviance
-    double deviance(std::size_t x) { return 2*((x-l_)/l_ - std::log(x/l_)); };    
+    void preprocess(DVector<double>& data) const { return; }
+    // vectorized operations
+    DMatrix<double> variance(const DMatrix<double>& x) {
+      return x.array().pow(2); }                             // x^2   
+    DMatrix<double> link(const DMatrix<double>& x) const {
+      return (-x).array().inverse(); }                       // -1/x
+    DMatrix<double> inv_link(const DMatrix<double>& x) const {
+      return (-x).array().inverse(); }                       // -1/x
+    DMatrix<double> der_link(const DMatrix<double>& x) const {
+      return x.array().pow(2).inverse(); }                   // 1/(x^2)
+   
+    // deviance function
+    double deviance(double x, double y) { return 2*((y-x)/x - std::log(y/x)); };    
   };
 
   class Gamma {
@@ -114,21 +112,21 @@ namespace models {
     Gamma() = default;
     Gamma(double k, double theta) : k_(k), theta_(theta) {};
     // density function
-    double pdf(double x) const {
-      return 1/(std::tgamma(k_)*std::pow(theta_, k_))*std::pow(x, k_-1)*std::exp(-x/theta_);
-    };
-    
-    // first order statistics
+    double pdf(double x) const { return 1/(std::tgamma(k_)*std::pow(theta_, k_))*std::pow(x, k_-1)*std::exp(-x/theta_); };
     double mean() const { return k_*theta_; }
-    double variance() const { return k_*(theta_*theta_); };
+    void preprocess(DVector<double>& data) const { return; }
+    // vectorized operations
+    DMatrix<double> variance(const DMatrix<double>& x) {
+      return x.array().pow(2); }                             // x^2
+    DMatrix<double> link(const DMatrix<double>& x) const {
+      return (-x).array().inverse(); }                       // -1/x
+    DMatrix<double> inv_link(const DMatrix<double>& x) const {
+      return (-x).array().inverse(); }                       // -1/x
+    DMatrix<double> der_link(const DMatrix<double>& x) const {
+      return x.array().pow(2).inverse(); }                   // 1/(x^2)
 
-    // link function
-    double link(double x) const { return -1/x; };
-    double inv_link(double x) const { return -1/x; };
-    double der_link(double x) const { return 1/(x*x); };
-
-    // deviance
-    double deviance(std::size_t x) { return 2*((x-theta_)/theta_ - std::log(x/theta_)); };    
+    // deviance function
+    double deviance(double x, double y) { return 2*((y-x)/x - std::log(y/x)); };    
   };
   
 }}

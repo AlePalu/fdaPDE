@@ -12,6 +12,10 @@
 |fdaPDE/*
 !wrappers/
 !wrappers/**
+!wrappers/data/
+!wrappers/data/**
+!wrappers/tests/
+!wrappers/tests/**
 !fdaPDE/core/
 !fdaPDE/core/*
 !fdaPDE/core/utils/
@@ -89,6 +93,7 @@
 !test/data/mesh/unit_interval/*.csv
 !test/data/mesh/unit_interval_o2/*.csv
 !test/data/mesh/unit_square_coarse/*.csv
+!test/data/mesh/unit_square_medium/*.csv
 !test/data/*.mtx
 !test/data/models/SRPDE/
 !test/data/models/SRPDE/*
@@ -114,6 +119,18 @@
 !test/data/models/STRPDE/2D_test3/*
 !test/data/models/STRPDE/2D_test4/
 !test/data/models/STRPDE/2D_test4/*
+!test/data/models/GSRPDE/
+!test/data/models/GSRPDE/*
+!test/data/models/GSRPDE/2D_test1/
+!test/data/models/GSRPDE/2D_test1/*
+!test/data/models/GSRPDE/2D_test2/
+!test/data/models/GSRPDE/2D_test2/*
+!test/data/models/GSRPDE/2D_test3/
+!test/data/models/GSRPDE/2D_test3/*
+!test/data/models/GSRPDE/2D_test4/
+!test/data/models/GSRPDE/2D_test4/*
+!test/data/models/GSRPDE/2D_test5/
+!test/data/models/GSRPDE/2D_test5/*
 !test/data/PDEs/*.mtx
 *.txt
 *.json

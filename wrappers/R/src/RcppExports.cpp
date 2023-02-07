@@ -13,12 +13,32 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 
-RcppExport SEXP _rcpp_module_boot_Mesh2D();
-RcppExport SEXP _rcpp_module_boot_pde();
+RcppExport SEXP _rcpp_module_boot_Laplacian_2D_Order1();
+RcppExport SEXP _rcpp_module_boot_ConstantCoefficients_2D_Order1();
+RcppExport SEXP _rcpp_module_boot_SpaceVarying_2D_Order1();
+RcppExport SEXP _rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatNodes();
+RcppExport SEXP _rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatLocations();
+RcppExport SEXP _rcpp_module_boot_SRPDE_Laplacian_2D_Areal();
+RcppExport SEXP _rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatNodes();
+RcppExport SEXP _rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatLocations();
+RcppExport SEXP _rcpp_module_boot_SRPDE_ConstantCoefficients_2D_Areal();
+RcppExport SEXP _rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatNodes();
+RcppExport SEXP _rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatLocations();
+RcppExport SEXP _rcpp_module_boot_SRPDE_SpaceVarying_2D_Areal();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_Mesh2D", (DL_FUNC) &_rcpp_module_boot_Mesh2D, 0},
-    {"_rcpp_module_boot_pde", (DL_FUNC) &_rcpp_module_boot_pde, 0},
+    {"_rcpp_module_boot_Laplacian_2D_Order1", (DL_FUNC) &_rcpp_module_boot_Laplacian_2D_Order1, 0},
+    {"_rcpp_module_boot_ConstantCoefficients_2D_Order1", (DL_FUNC) &_rcpp_module_boot_ConstantCoefficients_2D_Order1, 0},
+    {"_rcpp_module_boot_SpaceVarying_2D_Order1", (DL_FUNC) &_rcpp_module_boot_SpaceVarying_2D_Order1, 0},
+    {"_rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatNodes", (DL_FUNC) &_rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatNodes, 0},
+    {"_rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatLocations", (DL_FUNC) &_rcpp_module_boot_SRPDE_Laplacian_2D_GeoStatLocations, 0},
+    {"_rcpp_module_boot_SRPDE_Laplacian_2D_Areal", (DL_FUNC) &_rcpp_module_boot_SRPDE_Laplacian_2D_Areal, 0},
+    {"_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatNodes", (DL_FUNC) &_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatNodes, 0},
+    {"_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatLocations", (DL_FUNC) &_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_GeoStatLocations, 0},
+    {"_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_Areal", (DL_FUNC) &_rcpp_module_boot_SRPDE_ConstantCoefficients_2D_Areal, 0},
+    {"_rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatNodes", (DL_FUNC) &_rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatNodes, 0},
+    {"_rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatLocations", (DL_FUNC) &_rcpp_module_boot_SRPDE_SpaceVarying_2D_GeoStatLocations, 0},
+    {"_rcpp_module_boot_SRPDE_SpaceVarying_2D_Areal", (DL_FUNC) &_rcpp_module_boot_SRPDE_SpaceVarying_2D_Areal, 0},
     {NULL, NULL, 0}
 };
 

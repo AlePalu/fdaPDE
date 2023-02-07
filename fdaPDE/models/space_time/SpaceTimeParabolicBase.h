@@ -38,6 +38,7 @@ namespace models{
     using Base::time_; // time interval [0,T]
     
     // constructor
+    SpaceTimeParabolicBase() = default;
     SpaceTimeParabolicBase(const PDE& pde, const DVector<double>& time)
       : SpaceTimeBase<Model>(pde, time) {}
     // init data structure related to parabolic regularization
@@ -77,8 +78,7 @@ namespace models{
     // return discretized force corrected by initial conditions
     const DMatrix<double>& u() {
       u_ = pde_->force();
-      // correct first n rows of discretized force as (1/DeltaT * (u_1 + R0*s))
-      u_.block(0,0, model().n_basis(),1) /= DeltaT_;
+      // correct first n rows of discretized force as (u_1 + R0*s/DeltaT)
       u_.block(0,0, model().n_basis(),1) += (1.0/DeltaT_)*(pde_->R0()*s_);
       return u_;
     }
@@ -124,9 +124,9 @@ namespace models{
 
       // compute forcing term corrected by initial condition (pde is initialized before the regularization term)
       u_ = pde_->force();
-      // correct first n rows of discretized force as (1/DeltaT * (u_1 + R0*s))
-      u_.block(0,0, model().n_basis(),1) /= DeltaT_;
-      u_.block(0,0, model().n_basis(),1) -= (1.0/DeltaT_)*(pde_->R0()*s_);
+      // correct first n rows of discretized force as (u_1 + R0*s/DeltaT)
+      //u_.block(0,0, model().n_basis(),1) -= (1.0/DeltaT_)*(pde_->R0()*s_);
+      u_.block(0,0, model().n_basis(),1) += (1.0/DeltaT_)*(pde_->R0()*s_);
     }
     
     // getters

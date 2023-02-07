@@ -49,9 +49,17 @@ namespace models{
   template <typename Model>
   struct is_space_time {
     static constexpr bool value = !std::is_same<
-      typename model_traits<Model>::RegularizationType, SpaceOnlyTag>::value;
+      typename model_traits<typename std::decay<Model>::type>::RegularizationType, SpaceOnlyTag>::value;
   };
 
+  // trait to detect if a model has a non-gaussian error distribution
+  class Gaussian; // tag used for distinguish a generalized model from a non-generalized one
+  template <typename Model>
+  struct is_generalized {
+    static constexpr bool value = !std::is_same<
+      typename model_traits<typename std::decay<Model>::type>::DistributionType, Gaussian>::value;
+  };
+  
   // trait to select the number of smoothing parameters
   template <typename Model>
   class n_smoothing_parameters {
@@ -119,9 +127,6 @@ namespace models{
   // the layout of the BlockFrame, use these instead of manually typing the block name when accessing df_
 #define OBSERVATIONS_BLK "y" // matrix of observations
 #define INDEXES_BLK "i"      // vector of observation indices
-#define LOCATIONS_BLK "P"    // matrix of spatial locations coordinates
-#define AREAL_BLK "D"        // incidence matrix for areal observations
-
   
 }}
 

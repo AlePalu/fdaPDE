@@ -69,6 +69,7 @@ namespace models{
     inline const Model& model() const { return static_cast<const Model&>(*this); }
   public:   
     // constructor
+    SamplingDesign() = default;
     SamplingDesign(const DMatrix<double>& locs) : locs_(locs) {};
     // init sampling data structures
     void init_sampling() {    
@@ -105,6 +106,8 @@ namespace models{
     auto PsiTD() const { return model().Psi().transpose(); }
     std::size_t n_locs() const { return locs_.rows(); }
     const DMatrix<double>& locs() const { return locs_; }
+    // setter
+    void setLocs(const DMatrix<double>& locs) { locs_ = locs; }
   };
 
   // data sampled at subdomains D_1, D_2, ... D_d
@@ -118,6 +121,7 @@ namespace models{
     inline const Model& model() const { return static_cast<const Model&>(*this); }
   public:   
     // constructor
+    SamplingDesign() = default;
     SamplingDesign(const DMatrix<int>& subdomains) : subdomains_(subdomains) {};
     // init sampling data structures
     void init_sampling() {
@@ -182,6 +186,8 @@ namespace models{
     std::size_t n_locs() const { return subdomains_.rows(); }
     const DiagMatrix<double>& D() const { return D_; }
     const DMatrix<int>& locs() const { return subdomains_; }
+    // setter
+    void setSubdomains(const DMatrix<int>& subdomains) { subdomains_ = subdomains; }
   };  
   
 }}

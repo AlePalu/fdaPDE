@@ -38,7 +38,7 @@ using fdaPDE::preprocess::InitialConditionEstimator;
    order FE:     1
    time penalization: separable (mass penalization)
  */
-TEST(STRPDE, Test1_Laplacian_NonParametric_GeostatisticalAtNodes_Separable) {
+TEST(STRPDE, Test1_Laplacian_NonParametric_GeostatisticalAtNodes_Separable_Monolithic) {
   // define time domain
   DVector<double> time_mesh;
   time_mesh.resize(11);
@@ -111,7 +111,7 @@ TEST(STRPDE, Test1_Laplacian_NonParametric_GeostatisticalAtNodes_Separable) {
    order FE:     1
    time penalization: separable (mass penalization)
  */
-TEST(STRPDE, Test2_Laplacian_SemiParametric_GeostatisticalAtLocations_Separable) {
+TEST(STRPDE, Test2_Laplacian_SemiParametric_GeostatisticalAtLocations_Separable_Monolithic) {
   // define time domain
   DVector<double> time_mesh;
   time_mesh.resize(5);
@@ -199,7 +199,7 @@ TEST(STRPDE, Test2_Laplacian_SemiParametric_GeostatisticalAtLocations_Separable)
    order FE:     1
    time penalization: parabolic (monolithic solution)
  */
-TEST(STRPDE, Test3_NonCostantCoefficientsPDE_NonParametric_Areal_Parabolic_EstimatedIC) {
+TEST(STRPDE, Test3_NonCostantCoefficientsPDE_NonParametric_Areal_Parabolic_Monolithic_EstimatedIC) {
   // define time domain, we skip the first time instant because we are going to use the first block of data
   // for the estimation of the initial condition
   DVector<double> time_mesh;
@@ -276,11 +276,14 @@ TEST(STRPDE, Test3_NonCostantCoefficientsPDE_NonParametric_Areal_Parabolic_Estim
   model.solve();
   
   //   **  test correctness of computed results  **   
-	 
-  // estimate of spatial field \hat f
+
+  DMatrix<double> computedF;
+  computedF.resize((model.n_time()+1)*model.n_basis(), 1);
+  computedF << model.s(), model.f();
+  
+  // estimate of spatial field \hat f (with estimatate of initial condition)
   SpMatrix<double> expectedSolution;
   Eigen::loadMarket(expectedSolution, "data/models/STRPDE/2D_test3/sol.mtx");
-  DMatrix<double> computedF = model.f();
   std::size_t N = computedF.rows();
   EXPECT_TRUE( almost_equal(DMatrix<double>(expectedSolution).topRows(N), computedF) );
 }
@@ -294,7 +297,7 @@ TEST(STRPDE, Test3_NonCostantCoefficientsPDE_NonParametric_Areal_Parabolic_Estim
    order FE:     1
    time penalization: parabolic (iterative solver)
  */
-TEST(STRPDE, Test4_Laplacian_NonParametric_GeostatisticalAtNodes_Parabolic_Iterative) {
+TEST(STRPDE, Test4_Laplacian_NonParametric_GeostatisticalAtNodes_Parabolic_Iterative_EstimatedIC) {
   // define time domain
   DVector<double> time_mesh;
   time_mesh.resize(11);
@@ -350,7 +353,7 @@ TEST(STRPDE, Test4_Laplacian_NonParametric_GeostatisticalAtNodes_Parabolic_Itera
   model.solve();
 
   //   **  test correctness of computed results  **   
-  
+
   // estimate of spatial field \hat f
   SpMatrix<double> expectedSolution;
   Eigen::loadMarket(expectedSolution, "data/models/STRPDE/2D_test4/sol.mtx");
@@ -358,7 +361,3 @@ TEST(STRPDE, Test4_Laplacian_NonParametric_GeostatisticalAtNodes_Parabolic_Itera
   std::size_t N = computedF.rows();
   EXPECT_TRUE( almost_equal(DMatrix<double>(expectedSolution).topRows(N), computedF) );
 }
-
-
-
-
