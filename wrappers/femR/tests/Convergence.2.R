@@ -20,7 +20,7 @@ PDE_parameters <- list("diffusion" = 1., "transport" = matrix(0.,nrow=2,ncol=1),
 N = 4
 errors.L2 <- rep(0, times = N)
 h <- rep(0, times = N)
-
+nnodes <- rep(0, times = N)
 mesh <- fdaPDE::create.mesh.2D(nodes = matrix(c(0,0,1,0,1,1,0,1), nrow=4,ncol=2, byrow=T), order = 1)
 mesh <- fdaPDE::refine.mesh.2D(mesh=mesh, minimum_angle=30, maximum_area=0.05)
 
@@ -30,7 +30,7 @@ for(i in 1:N){
     
     square <- list(nodes= mesh$nodes, edges= mesh$segments, elements= mesh$triangles, neigh= mesh$neighbors, boundary= mesh$nodesmarkers)
     h[i] <- compute_h(mesh)$h_max
-    
+    nnodes[i] <- nrow(mesh$nodes)
     PDE <- new(PDE_2D_isotropic_ORDER_2, square)
     PDE$set_PDEparameters(PDE_parameters)
     
@@ -54,6 +54,9 @@ for(i in 1:N){
 q = log2(errors.L2[1:(N-1)]/errors.L2[2:N])
 cat("order = ", q, "\n")
 
+p = log10(errors.L2[1:(N-1)]/errors.L2[2:N])/log10(nnodes[2:N]/nnodes[1:(N-1)])
+cat("order (nodes) = ", p, "\n")
+
 imgdir_ = "imgs/"
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)
@@ -72,6 +75,18 @@ lines(log(h), log(h^3), col = "black", type = "b", pch = 16, lwd = 3, lty = 2, c
 legend("topleft", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$h^3$")), 
         col=c("red", "black"), 
         lty = 2)
+dev.off()
+
+pdf(paste(imgdir_,"diffusion_rates_order_2_nodes.pdf",sep=""))
+plot(log10(nnodes), log10(errors.L2), col="red", type="b", pch =16, lwd = 4, lty = 2, cex = 3,
+        ylim = c(min(log10(nnodes^(-1.5)), log10(errors.L2)), max(log10(nnodes^(-1.5)), log10(errors.L2))),
+        xlab = TeX("$log_{10}(nodes)$"), ylab="", cex.lab=1.25)
+lines(log10(nnodes), log10(nnodes^(-1.5)), col = "black", type = "b", pch = 16, lwd = 4, lty =2, cex = 3 )
+legend("topright", legend=c(TeX("$\\| u - u_{ex} \\|_{2}$"), TeX("$nodes^{-3/2}$")), 
+        col=c("red", "black"), 
+        lty = 2,
+        lwd=6, 
+        cex=1.25)
 dev.off()
 
 png(paste(imgdir_,"diffusion_exact_solution.png",sep=""))

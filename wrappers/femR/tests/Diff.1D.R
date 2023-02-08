@@ -308,7 +308,7 @@ PDE$set_forcingTerm(as.matrix(f))
 
 result <- PDE$solve()
 
-u_ex <- as.matrix(exact_solution(unit_interval$nodes))
+u_ex <- as.matrix(exact_solution(PDE$get_dofs_coordinates( )))
 
 error.L2 <- sqrt(sum(result$Mass %*% (u_ex - result$solution)^2))
 cat("L2 error = ", error.L2, "\n")
@@ -352,7 +352,7 @@ for(i in 1:N){
     PDE <- new(PDE_1D_isotropic_ORDER_2, interval)
     PDE$set_PDEparameters(PDE_parameters)
     
-    dirichletBC <- exact_solution(interval$nodes)
+    dirichletBC <- exact_solution(PDE$get_dofs_coordinates())
     PDE$set_dirichletBC(dirichletBC)
 
     quadrature_nodes <- PDE$get_quadrature_nodes()
