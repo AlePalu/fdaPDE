@@ -9,11 +9,31 @@ graphics.off()
 rmse <- function(x,y){return(sqrt(mean( (x-y)^2)))}
 
 #2D
-exact <- function(x,y) sin(2*pi*x)*sin(2*pi*y)
-f <- function(x,y) 8*pi^2*sin(2*pi*x)*sin(2*pi*y)
+W_ <- 1.
+R_ <- 1.
+H_ <- 1.
+beta_ <- 1
+
+alpha_ <- H_ * beta_ / R_
+gamma_ <- pi * W_ / R_  
+
+lambda1 <- -alpha_/2 - sqrt((alpha_/2)^2 + pi^2)
+lambda2 <- -alpha_/2 + sqrt((alpha_/2)^2 + pi^2)
+
+p_ <- (1-exp(lambda2))/(exp(lambda1)-exp(lambda2))
+
+exact <- function(x,y){
+  return( -gamma_/pi^2 * (p_*exp(lambda1*x) + (1-p_)*exp(lambda2*x) - 1. )*sin(pi*y) )
+}
+
+# Diffusion > 0 if check = T
+f <- function(x,y){
+  return(gamma_ * sin(pi*y)) 
+}
+
 Dy    <- Dx <- -1.   # diffusion coeff, X- and Y-direction
 
-PDE_parameters <- list("diffusion" = 1., "transport" = matrix(0.,nrow=2,ncol=1), "reaction" = 0.)
+PDE_parameters <- list("diffusion" = 1., "transport" = rbind(-alpha_,0.), "reaction" = 0.)
 
 N = 2*c(20,40,80,160) 
 
@@ -37,19 +57,14 @@ imgdir_ = paste(imgdir_,domain_,sep="")
 if(!dir.exists(imgdir_))
     dir.create(imgdir_)    
 
-imgdir_ = paste(imgdir_,"Diff/",sep="")
+imgdir_ = paste(imgdir_,"AdvDiff/",sep="")
 if(!dir.exists(imgdir_))
-  dir.create(imgdir_)    
+    dir.create(imgdir_)    
+
 
 CEX.axis = 1.25
 CEX = 3
 LWD = 3
-
-min.sol = 1e8
-max.sol = -1e8
- 
-min.err = 1e8
-max.err = -1e8
 
 for(i in 1:length(N)){
   cat("############ ", i , " ############\n")
@@ -60,7 +75,7 @@ for(i in 1:length(N)){
   h[i] = max(grid2D$dx, grid2D$dy)
 
   D.grid    <- setup.prop.2D(value = Dx, y.value = Dy, grid = grid2D)
-  v.grid    <- setup.prop.2D(value = 0, grid = grid2D)
+  v.grid    <- setup.prop.2D(value = +alpha_, y.value=0, grid = grid2D) # "minus" is embedded in the model
   A.grid    <- setup.prop.2D(value = 1, grid = grid2D)
   VF.grid   <- setup.prop.2D(value = 1, grid = grid2D)
 
@@ -118,7 +133,7 @@ for(i in 1:length(N)){
   #                      abs(y.hat-y.ex), main="deSolve",cex.axis = CEX.axis, cex.main=CEX.axis)
   #       dev.off()
   # 
-  #       png(paste(imgdir_, "Diff_deSolve.png", sep = ""))
+  #       png(paste(imgdir_, "AdvDiff_deSolve.png", sep = ""))
   #       filled.contour(x = x.grid$x.mid,
   #                      y = x.grid$x.mid,
   #                      y.hat, main="deSolve",cex.axis = CEX.axis, cex.main=CEX.axis)
@@ -159,28 +174,25 @@ for(i in 1:length(N)){
                 for(l in 1:(N[i]+1)){
                         U_h[k,l] = eval.FEM(u_h, locations= cbind(x[k],y[l]))
                         y.ex[k,l] =  exact(x[k], y[l]) 
-                        
                 }
         }
-        
         error.femR = abs(U_h-y.ex)
         min.err = min(error.femR, error.deSolve)
         max.err = max(error.femR, error.deSolve)
         
         min.sol = min(min(y.ex, U_h), y.hat)
         max.sol = max(max(y.ex, U_h), y.hat)
-        
         png(paste(imgdir_, "error_femR_1.png", sep = ""))
         filled.contour(error.femR, main=TeX("$|u - u_h|$"), zlim = c(min.err, max.err),
                        cex.axis = CEX.axis, cex.main=CEX.axis)
         dev.off()
-
-        png(paste(imgdir_, "Diff_femR_1.png", sep = ""))
+        
+        png(paste(imgdir_, "AdvDiff_femR_1.png", sep = ""))
         filled.contour(U_h, main=TeX("$u_h$"), zlim = c(min.sol, max.sol),
                        cex.axis = CEX.axis, cex.main=CEX.axis)
         dev.off()
         
-        png(paste(imgdir_, "Diff.png", sep = ""))
+        png(paste(imgdir_, "AdvDiff.png", sep = ""))
         filled.contour(y.ex, main="", zlim = c(min.sol, max.sol),
                        cex.axis = CEX.axis, cex.main=CEX.axis)
         dev.off()
@@ -192,12 +204,20 @@ for(i in 1:length(N)){
                        cex.axis = CEX.axis, cex.main=CEX.axis)
         dev.off()
         
-        png(paste(imgdir_, "Diff_deSolve.png", sep = ""))
+        png(paste(imgdir_, "AdvDiff_deSolve.png", sep = ""))
         filled.contour(x = x.grid$x.mid,
                        y = x.grid$x.mid,
                        y.hat, main=TeX("$u_h$"), zlim = c(min.sol, max.sol),
                        cex.axis = CEX.axis, cex.main=CEX.axis)
         dev.off()
+        
+        # png(paste(imgdir_, "error_femR_1.png", sep = ""))
+        # filled.contour(abs(U_h-y.ex), main="femR order 1",cex.axis = CEX.axis, cex.main=CEX.axis)
+        # dev.off()
+        # 
+        # png(paste(imgdir_, "AdvDiff_femR_1.png", sep = ""))
+        # filled.contour(U_h, main="femR order 1",cex.axis = CEX.axis, cex.main=CEX.axis)
+        # dev.off()
   }
 
   ###### femR - ORDER 2 ######
@@ -238,27 +258,30 @@ cat("deSolve order (nodes)  = ", p$deSolve, "\n")
 cat("femR 1 order (nodes) = ", p$femR_1, "\n")
 cat("femR 2 order (nodes) = ", p$femR_2, "\n")
  
-pdf(paste(imgdir_,"Diff_rates_deSolve.pdf",sep=""))
+pdf(paste(imgdir_,"AdvDiff_rates_deSolve.pdf",sep=""))
 par(mai=c(1,1,0.5,0.5))
 plot(log2(h), log2(errors.l2$femR_1), col="red", type="b", pch =16, lwd = LWD, lty = 1, cex = CEX,
-        ylim = c( min( min(log2(h^3), log2(errors.l2$femR_1)), min(log2(errors.l2$deSolve), log2(errors.l2$femR_2)) ), 
-                  max( max(log2(h^2), log2(errors.l2$femR_1)), max(log2(errors.l2$deSolve), log2(errors.l2$femR_2)) ) ),
+        ylim = c( min( min(log2(h^3), log2(errors.l2$femR_1)), min(log2(errors.l2$deSolve), log2(errors.l2$femR_2))), 
+                  max( max(log2(h), log2(errors.l2$femR_1)), max(log2(errors.l2$deSolve), log2(errors.l2$femR_2)))),
         xlab = TeX("$log_2(h)$"), ylab = TeX("$log_2(\\| u - u_{ex} \\|_{2})$"),
         cex.lab=CEX.axis, cex.axis=CEX.axis, cex.main=CEX.axis)
 lines(log2(h), log2(errors.l2$femR_2), col = "orange", type = "b", pch = 16, lwd = LWD, lty =1, cex = CEX)
 lines(log2(h), log2(errors.l2$deSolve), col = "blue", type = "b", pch = 16, lwd = LWD, lty =1, cex = CEX)
-lines(log2(h), log2(h^2)-1., col = "black", lwd = 3, lty =2)
-lines(log2(h), log2(h^3), col = "black", lwd = 3, lty =2)
-text(log2(h[3]),(log2(h[3]^2)-1.+0.65), TeX("$h^2$"),cex=CEX.axis)
-text(log2(h[3]),(log2(h[3]^3)+0.65), TeX("$h^3$"),cex=CEX.axis)
+lines(log2(h), log2(h)-3, col = "black", lwd = 3, lty =2)
+lines(log2(h), log2(h^2)-2, col = "black", lwd = 3, lty =2)
+lines(log2(h), log2(h^3)+0.5, col = "black", lwd = 3, lty =2)
+text(log2(h[3]),(log2(h[3])-3.+0.65), TeX("$h$"),cex=CEX.axis)
+text(log2(h[3]),(log2(h[3]^2)-2+0.65), TeX("$h^2$"),cex=CEX.axis)
+text(log2(h[3]),(log2(h[3]^3)+0.5+0.75), TeX("$h^3$"),cex=CEX.axis)
 legend("topleft", legend=c("deSolve", "femR order 1", "femR order 2"), 
         col=c("blue", "red", "orange"), 
         lty = 1, 
         lwd = LWD+2, 
         cex=CEX.axis)
+
 dev.off()
 
-pdf(paste(imgdir_,"Diff_times_deSolve.pdf",sep=""))
+pdf(paste(imgdir_,"AdvDiff_times_deSolve.pdf",sep=""))
 par(mai=c(1,1,0.5,0.5))
 plot(log10(nnodes), log10(times$femR_1), col="red", type="b", pch =16, lwd = LWD, lty = 1, cex = CEX,
      ylim = c(min( min(log10(times$femR_1),log10(times$deSolve)), log10(times$femR_2)), 
