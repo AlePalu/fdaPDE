@@ -63,6 +63,10 @@ class R_PDE {
         DMatrix<double> get_dofs_coordinates() const {
             return mesh_.dofCoords();
         };
+
+        DMatrix<int> get_elements() const {
+            return mesh_.dof_table();
+        };
         
         DMatrix<double> force() const{
             return pde_.force();
@@ -116,7 +120,7 @@ class R_PDE<1,2,R,F> {
         DMatrix<double> solution_;
     
     public:    
-        R_PDE(const Rcpp::List& R_Mesh):mesh_(Rcpp::as<DMatrix<double>>(interval2network(R_Mesh["nodes"])), 
+        R_PDE(const Rcpp::List& R_Mesh):mesh_(Rcpp::as<DMatrix<double>>(R_Mesh["nodes"]), 
                                               Rcpp::as<DMatrix<int>>( R_Mesh["edges"]), 
                                               Rcpp::as<DMatrix<int>>( R_Mesh["elements"]), 
                                               fromTriplets(R_Mesh["neigh"], R_Mesh["nodes"]), 
@@ -145,6 +149,10 @@ class R_PDE<1,2,R,F> {
         
         DMatrix<double> get_dofs_coordinates() const {
             return mesh_.dofCoords();
+        };
+
+        DMatrix<int> get_elements() const {
+            return mesh_.dof_table();
         };
         
         DMatrix<double> force() const{
@@ -191,6 +199,7 @@ RCPP_MODULE(PDE_1D_isotropic_ORDER_1) {
     .method("set_forcingTerm",      &R_PDE_isotropic_1D_ORDER_1::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_1D_ORDER_1::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_1D_ORDER_1::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_1D_ORDER_1::get_elements)
     .method("force",                &R_PDE_isotropic_1D_ORDER_1::force)
     .method("solve",                &R_PDE_isotropic_1D_ORDER_1::solve)
     ;
@@ -204,6 +213,7 @@ RCPP_MODULE(PDE_1D_isotropic_ORDER_2) {
     .method("set_forcingTerm",      &R_PDE_isotropic_1D_ORDER_2::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_1D_ORDER_2::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_1D_ORDER_2::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_1D_ORDER_2::get_elements)
     .method("force",                &R_PDE_isotropic_1D_ORDER_2::force)
     .method("solve",                &R_PDE_isotropic_1D_ORDER_2::solve)
     ;
@@ -217,6 +227,7 @@ RCPP_MODULE(PDE_1_5D_isotropic_ORDER_1) {
     .method("set_forcingTerm",      &R_PDE_isotropic_1_5D_ORDER_1::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_1_5D_ORDER_1::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_1_5D_ORDER_1::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_1_5D_ORDER_1::get_elements)
     .method("force",                &R_PDE_isotropic_1_5D_ORDER_1::force)
     .method("solve",                &R_PDE_isotropic_1_5D_ORDER_1::solve)
     ;
@@ -230,6 +241,7 @@ RCPP_MODULE(PDE_1_5D_isotropic_ORDER_2) {
     .method("set_forcingTerm",      &R_PDE_isotropic_1_5D_ORDER_2::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_1_5D_ORDER_2::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_1_5D_ORDER_2::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_1_5D_ORDER_2::get_elements)
     .method("force",                &R_PDE_isotropic_1_5D_ORDER_2::force)
     .method("solve",                &R_PDE_isotropic_1_5D_ORDER_2::solve)
     ;
@@ -243,6 +255,7 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_1) {
     .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_1::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_1::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_2D_ORDER_1::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_2D_ORDER_1::get_elements)
     .method("force",                &R_PDE_isotropic_2D_ORDER_1::force)
     .method("solve",                &R_PDE_isotropic_2D_ORDER_1::solve)
     ;
@@ -256,6 +269,7 @@ RCPP_MODULE(PDE_2D_isotropic_ORDER_2) {
     .method("set_forcingTerm",      &R_PDE_isotropic_2D_ORDER_2::set_forcingTerm)
     .method("set_PDEparameters",    &R_PDE_isotropic_2D_ORDER_2::set_PDEparameters)
     .method("get_dofs_coordinates", &R_PDE_isotropic_2D_ORDER_2::get_dofs_coordinates)
+    .method("get_elements",         &R_PDE_isotropic_2D_ORDER_2::get_elements)
     .method("force",                &R_PDE_isotropic_2D_ORDER_2::force)
     .method("solve",                &R_PDE_isotropic_2D_ORDER_2::solve)
     ;
