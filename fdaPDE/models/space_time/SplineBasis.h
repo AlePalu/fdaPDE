@@ -61,13 +61,13 @@ namespace models {
       tripletList.reserve(m*M);
 
       for(int i = 0; i < M; ++i){
-	// exploit local support of splines
-	for(int j = ((int)(i-R) > 0 ? (int)(i-R) : 0); j <= std::min(m-1, i+1); ++j){
+	for(int j = 0; j < m; ++j){ // evaluate spline at given m time locations
 	  tripletList.emplace_back(j, i, basis_[i](SVector<1>(points[j])));
 	}
       }
       // finalize construction
       result.setFromTriplets(tripletList.begin(), tripletList.end());
+      result.prune(0.0); // remove zeros
       result.makeCompressed();    
       return result;
     }

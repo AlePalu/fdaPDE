@@ -37,19 +37,20 @@ namespace models{
     // constructor
     GSRPDE() = default;
     // space-only constructor
-    template <typename... SamplingData, typename U = RegularizationType,
+    template <typename U = RegularizationType,
 	      typename std::enable_if< std::is_same<U, SpaceOnlyTag>::value, int>::type = 0> 
-    GSRPDE(const PDE& pde, const SamplingData&... s) : Base(pde, s...) {};
+    GSRPDE(const PDE& pde) : Base(pde) {};
     // space-time constructor
-    template <typename... SamplingData, typename U = RegularizationType,
+    template <typename U = RegularizationType,
 	      typename std::enable_if<!std::is_same<U, SpaceOnlyTag>::value, int>::type = 0> 
-    GSRPDE(const PDE& pde, const DVector<double>& time, const SamplingData&... s) : Base(pde, time, s...) {};
+    GSRPDE(const PDE& pde, const DVector<double>& time) : Base(pde, time) {};
 
     // setter
     void setFPIRLSTolerance(double tol) { tol_ = tol; }
     void setFPIRLSMaxIterations(std::size_t max_iter) { max_iter_ = max_iter; }
     
     // ModelBase implementation
+    void init_model() { return; }
     virtual void solve(); // finds a solution to the smoothing problem
     
     // iGCV interface implementation
@@ -67,6 +68,7 @@ namespace models{
     typedef RegularizationType_ RegularizationType;
     static constexpr Sampling sampling = SamplingDesign;
     static constexpr SolverType solver = Solver;
+    static constexpr int n_lambda = n_smoothing_parameters<RegularizationType_>::value;
     typedef DistributionType_ DistributionType;
   };
 
@@ -78,6 +80,7 @@ namespace models{
     typedef SplineBasis<3> TimeBasis; // use cubic B-splines
     static constexpr Sampling sampling = SamplingDesign;
     static constexpr SolverType solver = Solver;
+    static constexpr int n_lambda = 2;
     typedef DistributionType_ DistributionType;
   };
   

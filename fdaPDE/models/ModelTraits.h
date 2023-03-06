@@ -77,16 +77,13 @@ namespace models{
   // traits for sampling design in space  
   template <typename Model>
   struct is_sampling_areal { 
-    static constexpr bool value = model_traits<Model>::sampling == Sampling::Areal;
-  };
+    static constexpr bool value = model_traits<Model>::sampling == Sampling::Areal; };
   template <typename Model>
   struct is_sampling_pointwise_at_mesh { 
-    static constexpr bool value = model_traits<Model>::sampling == Sampling::GeoStatMeshNodes;
-  };
+    static constexpr bool value = model_traits<Model>::sampling == Sampling::GeoStatMeshNodes; };
   template <typename Model>
   struct is_sampling_pointwise_at_locs { 
-    static constexpr bool value = model_traits<Model>::sampling == Sampling::GeoStatLocations;
-  };
+    static constexpr bool value = model_traits<Model>::sampling == Sampling::GeoStatLocations; };
   
   // macros for the import of common symbols to avoid long annoying lists of using declarations in model implemetations
 
@@ -127,8 +124,13 @@ namespace models{
 
   // standardized definitions for stat model BlockFrame. layers below will make heavy assumptions on
   // the layout of the BlockFrame, use these instead of manually typing the block name when accessing df_
-#define OBSERVATIONS_BLK "y" // matrix of observations
-#define INDEXES_BLK "i"      // vector of observation indices
+#define OBSERVATIONS_BLK    "OBSERVATIONS"     // matrix of observations
+#define INDEXES_BLK         "INDEXES"          // vector of observation indices
+#define SPACE_LOCATIONS_BLK "SPACE_LOCATIONS"  // matrix of space-location
+#define TIME_LOCATIONS_BLK  "TIME_LOCATIONS"   // vector of time-locations
+#define SPACE_AREAL_BLK     "INCIDENCE_MATRIX" // incidence matrix of areal observations
+#define DESIGN_MATRIX_BLK   "DESIGN_MATRIX"    // in regression is the design matrix
+#define WEIGHTS_BLK         "WEIGHTS"          // in regression are the weights for heteroscedastic observations
   
 }}
 

@@ -73,16 +73,17 @@ namespace models{
       // define internal problem solver and initialize it
       typename FPIRLS_internal_solver<Model>::type solver;
       if constexpr(!is_space_time<Model>::value) // space-only
-	solver = typename FPIRLS_internal_solver<Model>::type(m_.pde(), m_.locs());
+	solver = typename FPIRLS_internal_solver<Model>::type(m_.pde());
       else{ // space-time
-	solver = typename FPIRLS_internal_solver<Model>::type(m_.pde(), m_.time_domain(), m_.locs());
+	solver = typename FPIRLS_internal_solver<Model>::type(m_.pde(), m_.time_domain());
 	// in case of parabolic regularization derive initial condition from input model
 	if constexpr(std::is_same<typename model_traits<Model_>::RegularizationType,
 		     SpaceTimeParabolicTag>::value)
 	  solver.setInitialCondition(m_.s());
       }
       solver.setLambda(m_.lambda());
-      solver.init();
+      solver.init_pde();
+      solver.init_regularization();
       
       // prepare data for solver, copy covariates if present
       BlockFrame<double, int> df = m_.data();
@@ -104,6 +105,8 @@ namespace models{
 	df.insert<double>(OBSERVATIONS_BLK, py_); // insert should overwrite existing block, if any is present
 	df.insert<double>(WEIGHTS_BLK, W_);
 	solver.setData(df);
+	solver.init_sampling();
+	solver.init_model(); // init model to adapt for changing in weights
 	solver.solve();
 	
 	// extract estimates from solver
