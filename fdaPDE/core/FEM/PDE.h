@@ -27,6 +27,23 @@ namespace FEM{
 
   // base class for any PDE object (used as tag in higher components of the architecture)
   struct PDEBase {};
+
+  template <typename F>
+  struct PDEInterface {
+
+    virtual void setDirichletBC(const DMatrix<double>& data) = 0;
+    virtual void setForcing(const F& data) = 0;
+    virtual DMatrix<double> quadratureNodes() const = 0;
+
+    virtual const DMatrix<double>& solution() const = 0;
+    virtual const DMatrix<double>& force() const = 0;
+    virtual const SpMatrix<double>& R1() const = 0;
+    virtual const SpMatrix<double>& R0() const = 0; 
+
+    virtual void init() = 0;
+    virtual void solve() = 0;
+    
+  };
   
   // top level class to describe a partial differential equation Lf = u.
   // N and M are the problem dimensions: these informations are strictly releated to the mesh used for domain discretization.
@@ -39,7 +56,7 @@ namespace FEM{
 	    typename B = LagrangianBasis<M,N,R>, // functional basis
 	    typename I = Integrator<M,R>, // quadrature rule used for approximation of integrals
 	    typename S = typename pde_standard_solver_selector<E>::type>
-  class PDE : public PDEBase {
+  class PDE : public PDEBase, public PDEInterface<F> {
   private:
     const Mesh<M,N,R>& domain_; // problem domain
     E bilinearForm_; // the differential operator of the problem in its weak formulation
@@ -62,14 +79,16 @@ namespace FEM{
   public:
     // minimal constructor, use below setters to complete the construction of a PDE object
     PDE(const Mesh<M,N,R>& domain) : domain_(domain) { buildBasis_(); }
-    void setForcing(const F& forcingData) { forcingData_ = forcingData; }
+    PDE(const Mesh<M,N,R>& domain, E bilinearForm)
+      : domain_(domain), bilinearForm_(bilinearForm) { buildBasis_(); };
+    virtual void setForcing(const F& forcingData) { forcingData_ = forcingData; }
     void setBilinearForm(E bilinearForm) { bilinearForm_ = bilinearForm; }
     // full constructors
     PDE(const Mesh<M,N,R>& domain, E bilinearForm, const F& forcingData);
     PDE(const Mesh<M,N,R>& domain, E bilinearForm, const F& forcingData, const B& basis, const I& integrator);
     
     // setters for boundary conditions
-    void setDirichletBC(const DMatrix<double>& data);
+    virtual void setDirichletBC(const DMatrix<double>& data);
     //void setNeumannBC();
     void setInitialCondition(const DVector<double>& data) { initialCondition_ = data; };
   
@@ -81,17 +100,17 @@ namespace FEM{
     const boundary_map& boundaryData() const { return boundaryData_; };
     const I& integrator() const { return integrator_; }
     const B& reference_basis() const { return referenceBasis_; }
-    DMatrix<double> quadratureNodes() const { return integrator_.quadratureNodes(domain_); }; // returns all quadrature nodes on the mesh
+    virtual DMatrix<double> quadratureNodes() const { return integrator_.quadratureNodes(domain_); }; // returns all quadrature nodes on the mesh
     
     // solution informations produced by call to .solve()
-    const DMatrix<double>&  solution() const { return solver_.solution(); };
-    const DMatrix<double>&  force() const { return solver_.force(); }; // rhs of FEM linear system
-    const SpMatrix<double>& R1() const { return solver_.R1(); };
-    const SpMatrix<double>& R0() const { return solver_.R0(); };
-    const BASIS_TABLE<M,N,R,B>& basis() const { return basis_; }
+    virtual const DMatrix<double>&  solution() const { return solver_.solution(); };
+    virtual const DMatrix<double>&  force() const { return solver_.force(); }; // rhs of FEM linear system
+    virtual const SpMatrix<double>& R1() const { return solver_.R1(); };
+    virtual const SpMatrix<double>& R0() const { return solver_.R0(); };
+    virtual const BASIS_TABLE<M,N,R,B>& basis() const { return basis_; }
     
-    void init();  // computes matrices R1, R0 and forcing vector without solving the FEM linear system.
-    void solve(); // entry point for PDE solver. Solves the pde (i.e. after this call solution() will contain valid data)
+    virtual void init();  // computes matrices R1, R0 and forcing vector without solving the FEM linear system.
+    virtual void solve(); // entry point for PDE solver. Solves the pde (i.e. after this call solution() will contain valid data)
 
     // expose compile time informations
     static constexpr std::size_t local_dimension = M;

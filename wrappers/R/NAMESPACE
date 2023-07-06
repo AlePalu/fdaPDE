@@ -1,5 +1,11 @@
-useDynLib(fdaPDE2, .registration=TRUE)
+useDynLib(femR, .registration=TRUE)
 import(methods, Rcpp)
 import(RcppEigen)
 importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
+exportPattern("^[^\\.]")
+
+## import operator overloads
+S3method("*", fe_grad)
+S3method("+", diff_op)
+S3method("*", diff_op)
+S3method("*", fe_function)

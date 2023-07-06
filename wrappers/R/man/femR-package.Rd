@@ -1,25 +1,25 @@
-\name{fdaPDE2-package}
-\alias{fdaPDE2-package}
-\alias{fdaPDE2}
+\name{femR-package}
+\alias{femR-package}
+\alias{femR}
 \docType{package}
 \title{
-\packageTitle{fdaPDE2}
+\packageTitle{femR}
 }
 \description{
-\packageDescription{fdaPDE2}
+\packageDescription{femR}
 }
 \details{
 
 The DESCRIPTION file:
-\packageDESCRIPTION{fdaPDE2}
-\packageIndices{fdaPDE2}
+\packageDESCRIPTION{femR}
+\packageIndices{femR}
 ~~ An overview of how to use the package, including the most important ~~
 ~~ functions ~~
 }
 \author{
-\packageAuthor{fdaPDE2}
+\packageAuthor{femR}
 
-Maintainer: \packageMaintainer{fdaPDE2}
+Maintainer: \packageMaintainer{femR}
 }
 \references{
 ~~ Literature or other references for background information ~~
